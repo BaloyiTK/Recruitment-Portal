@@ -1,4 +1,4 @@
-import User from "../../../models/User.js";
+import User from "../../../models/user.js";
 
 const makeUserAdmin = async (id) => {
   const user = await User.findById(id);

@@ -1,4 +1,4 @@
-import User from "../../../models/User.js";
+import User from "../../../models/user.js";
 
 const checkExistingUser = async (email) => {
   const userFound = await User.findOne({ email });

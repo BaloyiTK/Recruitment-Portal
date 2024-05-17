@@ -2,8 +2,6 @@ import bcrypt from "bcrypt";
 import User from "../../../models/user.js";
 import setAuthCookie from "../../../utils/setAuthCookie.js";
 import { generateAuthToken } from "../../../utils/generateAuthToken.js";
-import { verify } from "crypto";
-import verifyOTP from "../../../controllers/auth/verifyOtp.js";
 import generateOTP from "../../../utils/generateOTP.js";
 import sendRegistrationVerificationEmail from "../../communication/sendRegistrationVerificationEmail.js";
 

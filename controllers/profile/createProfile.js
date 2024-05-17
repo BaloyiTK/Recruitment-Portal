@@ -8,15 +8,15 @@ const createProfile = asyncHandler(async (req, res) => {
     const user = req.user.userId
 
     // Extract profile details from the request body
-    const { firstName, lastName, headline, location, dateOfBirth, gender, email, contactNumber, disabilityStatus, citizenship,
+    const { firstName,middleName, lastName, location, dateOfBirth, gender, email, contactNumber, disabilityStatus, citizenship,
        skills, experience, education, resume } = req.body;
 
     // Create a new profile instance with the extracted details
     const newProfile = new Profile({
       user,
       firstName,
+      middleName,
       lastName,
-      headline,
       location,
       dateOfBirth,
       gender,
@@ -37,8 +37,8 @@ const createProfile = asyncHandler(async (req, res) => {
     res.status(201).json(newProfile);
   } catch (error) {
     // If an error occurs during profile creation, handle it and send an error response
-   // console.error("Error creating profile:", error);
-    res.status(500).send(error.errors.user.message);
+    console.error("Error creating profile:", error);
+    res.status(500).send(error);
   }
 });
 

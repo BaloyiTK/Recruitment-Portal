@@ -2,6 +2,16 @@ import asyncHandler from "express-async-handler";
 import User from "../../models/user.js";
 import { generateAuthToken } from "../../utils/generateAuthToken.js";
 import setAuthCookie from "../../utils/setAuthCookie.js";
+import redis from "redis";
+
+// Create a Redis client
+const redisClient = redis.createClient();
+
+// Log any Redis errors
+redisClient.on('error', (err) => {
+  console.error('Redis error:', err);
+});
+
 
 const verifyOTP = asyncHandler(async (req, res) => {
   try {
@@ -24,7 +34,8 @@ const verifyOTP = asyncHandler(async (req, res) => {
       // If OTP has expired, set it to null
       user.otp = null;
       await user.save();
-      req.user = user;
+      // Store user ID in Redis for tracking purposes with an expiration time
+      redisClient.setex(`user:${user._id}`, 3600, 'true');
       return res.status(400).json({ message: "OTP has expired" });
     }
 

@@ -9,7 +9,7 @@ const registerUser = async (username, email, password) => {
 
   // Generate OTP and its expiration timestamp
   const otp = generateOTP(); // Generate OTP
-  const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); // Expiration time: 5 minutes from now
+  const otpExpiration = new Date(Date.now() + 1 * 60 * 1000); // Expiration time: 5 minutes from now
 
   await User.create({
     username,

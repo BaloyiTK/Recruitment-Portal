@@ -1,9 +1,5 @@
-
 const logoutUser = async (res) => {
-
-    res.clearCookie("token");
-
- 
+  res.clearCookie("token");
 };
 
 export default logoutUser;

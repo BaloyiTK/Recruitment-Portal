@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema(
     role: { type: String, required: true, default: "user" },
     otp: { 
       code: { type: String }, // OTP code
-      expires: { type: Date } // Timestamp when OTP was generated
+      expires: { type: Date },
+    
     }, 
     isEmailVerified: { type: Boolean, default: false } // Field to indicate whether email is verified
   },

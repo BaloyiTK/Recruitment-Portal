@@ -17,7 +17,7 @@ const registerUser = async (username, email, password) => {
     password: hashedPassword,
     otp: {
       code: otp,
-      expires: otpExpiration
+      expires: otpExpiration,
     }
   });
 

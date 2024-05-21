@@ -5,7 +5,14 @@ const profileSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   middleName: { type: String},
   lastName: { type: String, required: true },
-  location: { type: String },
+  location: {
+    city: { type: String },
+    address: { type: String },
+    province: { type: String },
+    street: { type: String },
+    zipCode: { type: String },
+    country: { type: String }
+  },
   dateOfBirth: { type: Date },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
   email: { type: String, required: true },
@@ -13,6 +20,8 @@ const profileSchema = new mongoose.Schema({
   disabilityStatus: { type: String },
   citizenship: { type: String },
   skills: [{ type: String }],
+  attendedProgram: { type: Boolean }, 
+  roleDescription: { type: String },
   experience: [
     {
       title: { type: String, required: true },

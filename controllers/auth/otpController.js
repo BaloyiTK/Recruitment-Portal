@@ -3,25 +3,20 @@ import asyncHandler from "express-async-handler";
 import User from "../../models/user.js";
 import { generateAuthToken } from "../../utils/generateAuthToken.js";
 import setAuthCookie from "../../utils/setAuthCookie.js";
-
 import generateOTP from "../../utils/generateOTP.js";
 import sendRegistrationVerificationEmail from "../../services/communication/sendRegistrationVerificationEmail.js";
 import { passwordHash } from "../../utils/passwordHash.js";
-import redis from 'redis';
-
-
-// const client = createClient();
+import redis from "redis";
 
 const client = redis.createClient({
-    password: 'WqO85Ttupyu7D6jCcxAzlOnq2yWmkUez',
-    socket: {
-        host: 'redis-11621.c277.us-east-1-3.ec2.redns.redis-cloud.com',
-        port: 11621
-    }
+  password: "WqO85Ttupyu7D6jCcxAzlOnq2yWmkUez",
+  socket: {
+    host: "redis-11621.c277.us-east-1-3.ec2.redns.redis-cloud.com",
+    port: 11621,
+  },
 });
 
-client.connect(console.log("Connected to Redis"))
-
+client.connect(console.log("Connected to Redis"));
 
 const verifyOTP = asyncHandler(async (req, res) => {
   try {
@@ -47,6 +42,8 @@ const verifyOTP = asyncHandler(async (req, res) => {
     const otpExpiration = user.otp.expires;
     const currentTime = new Date();
 
+    console.log(currentTime > otpExpiration);
+
     if (currentTime > otpExpiration) {
       user.otp = null;
       await user.save();
@@ -69,18 +66,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
 
 const resendOTP = asyncHandler(async (req, res) => {
   try {
-    //const id = await client.get("id");
-
-    // Get the value for a key
-client.get('id', (err, reply) => {
-    if (err) {
-        console.error("Error getting value:", err);
-    } else {
-        console.log("Get value:", reply);
-    }
-});
-
-    console.log(id);
+    const id = await client.get("id");
 
     if (!id) {
       res
@@ -90,6 +76,11 @@ client.get('id', (err, reply) => {
 
     const user = await User.findById(id).select("-password");
 
+    if (user.isEmailVerified) {
+      user.otp = null;
+      return res.status(404).json({ message: "Invalid Opt" });
+    }
+
     if (!user) {
       return res.status(404).json({ message: "user not found" });
     }
@@ -97,7 +88,7 @@ client.get('id', (err, reply) => {
     const recipientEmail = user.email;
     const otp = generateOTP();
 
-    const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); // Expiration time: 5 minutes from now
+    const otpExpiration = new Date(Date.now() + 1 * 60 * 1000); // Expiration time: 5 minutes from now
 
     user.otp.code = otp;
 
@@ -111,7 +102,7 @@ client.get('id', (err, reply) => {
 
     res.status(200).json({ message: "OTP resent successfully" });
     // Close the connection to Redis when done
-    client.quit();
+  
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -121,9 +112,8 @@ client.get('id', (err, reply) => {
 const registerUser = async (username, email, password) => {
   const hashedPassword = await passwordHash(password);
 
-  // Generate OTP and its expiration timestamp
   const otp = generateOTP(); // Generate OTP
-  const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); // Expiration time: 30 minutes from now
+  const otpExpiration = new Date(Date.now() + 1 * 60 * 1000); // Expiration time: 30 minutes from now
 
   const user = await User.create({
     username,
@@ -137,16 +127,9 @@ const registerUser = async (username, email, password) => {
 
   const userId = user.id.toString();
 
- // await client.set("id", userId);
-
- // Set a key-value pair
-  await client.set('id', userId, (err, reply) => {
-    if (err) {
-        console.error("Error setting value:", err);
-    } else {
-        console.log("Set value:", reply);
-    }
-});
+  if (client.isReady) {
+    client.setEx("id", 1000, userId);
+  }
 
   await sendRegistrationVerificationEmail(email, otp); // Send OTP via email
 };

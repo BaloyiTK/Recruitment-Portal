@@ -18,7 +18,7 @@ const profileSchema = new mongoose.Schema({
   email: { type: String, required: true },
   cellNumber: { type: String },
   altNumber: { type: String },
-  contactNumber: { type: String,  required:true },
+  contactNumber: { type: String},
   disabilityStatus: { type: String },
   citizenship: { type: String },
   skills: [{ type: String }],

@@ -46,7 +46,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
       await user.save();
 
       // Store user data in cache with the OTP as key
-      memcached.set(otp, user, 3600, (cacheErr) => {
+      memcached.set( user, 3600, (cacheErr) => {
         if (cacheErr) {
           console.error(cacheErr);
           // If there's an error caching, proceed without caching

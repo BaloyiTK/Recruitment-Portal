@@ -16,11 +16,15 @@ const profileSchema = new mongoose.Schema({
   dateOfBirth: { type: Date },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
   email: { type: String, required: true },
+  cellNumber: { type: String },
+  altNumber: { type: String },
   contactNumber: { type: String,  required:true },
   disabilityStatus: { type: String },
   citizenship: { type: String },
   skills: [{ type: String }],
   attendedProgram: { type: Boolean }, 
+  status: { type: String },
+  position : { type: String },
   roleDescription: { type: String },
   experience: [
     {

@@ -9,10 +9,10 @@ import { passwordHash } from "../../utils/passwordHash.js";
 import redis from "redis";
 
 const client = redis.createClient({
-  password: "WqO85Ttupyu7D6jCcxAzlOnq2yWmkUez",
+  password: process.env.REDIS_PASSWORD,
   socket: {
-    host: "redis-11621.c277.us-east-1-3.ec2.redns.redis-cloud.com",
-    port: 11621,
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
   },
 });
 
@@ -78,7 +78,7 @@ const resendOTP = asyncHandler(async (req, res) => {
 
     if (user.isEmailVerified) {
       user.otp = null;
-      return res.status(404).json({ message: "Invalid Opt" });
+      return res.status(404).json({ message: "User already verified, please login" });
     }
 
     if (!user) {

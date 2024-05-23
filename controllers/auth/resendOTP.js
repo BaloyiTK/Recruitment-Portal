@@ -1,39 +1,35 @@
 import asyncHandler from "express-async-handler";
-import { createClient } from 'redis';
+import Memcached from "memcached";
 
-const client = createClient();
-
-client.on('error', err => console.log('Redis Client Error', err));
+// Create a Memcached client instance
+const memcached = new Memcached('localhost:11211');
 
 const resendOTP = asyncHandler(async (req, res) => {
-    try {
-        // Ensure the client is connected before attempting to use it
-        if (client.connected) {
-            // Retrieve the userId from Redis
-            client.get('userId', (err, userId) => {
-                if (err) {
-                    console.error('Error retrieving userId from Redis:', err);
-                    res.status(500).json({ success: false, message: "Internal server error" });
-                    return;
-                }
-
-                if (userId) {
-                    console.log('UserId retrieved from Redis:', userId);
-                    // Here you can use the userId as needed
-                    res.status(200).json({ userId });
-                } else {
-                    console.log('UserId not found in Redis');
-                    res.status(404).json({ success: false, message: "UserId not found" });
-                }
-            });
+  try {
+    // Assuming you have the OTP value in req.body
+  
+    // Wrap the memcached.get function in a Promise for better error handling
+    const cachedUser = await new Promise((resolve, reject) => {
+      memcached.get(user, (err, data) => {
+        if (err) {
+          reject(err);
         } else {
-            // If the client is not connected, handle the error appropriately
-            throw new Error('Redis client is not connected');
+          resolve(data);
         }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+      });
+    });
+
+    if (cachedUser) {
+      // If user is found in cache, use cached data
+      res.status(200).json({ user: cachedUser });
+    } else {
+      // If user is not found in cache, handle accordingly
+      res.status(404).json({ message: "User not found in cache" });
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
 });
 
 export default resendOTP;

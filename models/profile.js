@@ -23,10 +23,8 @@ const profileSchema = new mongoose.Schema({
   citizenship: { type: String },
   skills: [{ type: String }],
   attendedProgram: { type: Boolean }, 
-  hasExprience: { type: Boolean },
   status: { type: String },
   position : { type: String },
-  qualificationDocuments : { type: String },
   roleDescription: { type: String },
   experience: [
     {

@@ -8,7 +8,6 @@ const resendOTP = asyncHandler(async (req, res) => {
   try {
     // Assuming you have the OTP value in req.body
   
-
     // Wrap the memcached.get function in a Promise for better error handling
     const cachedUser = await new Promise((resolve, reject) => {
       memcached.get(user, (err, data) => {

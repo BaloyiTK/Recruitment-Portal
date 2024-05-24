@@ -8,18 +8,13 @@ import {
   makeAdmin,
   makeEditor,
 } from "../controllers/auth/userRoleController.js";
-//import verifyOTP from "../controllers/auth/verifyOTP.js";
 import forgotPassword from "../controllers/auth/forgotPassword.js";
-//import resendOTP from "../controllers/auth/resendOTP.js";
 import { resendOTP, verifyOTP } from "../controllers/auth/otpController.js";
-//import { cache } from "../middleswares/cacheMiddleware.js";
 
 const router = express.Router();
 
 router.post("/register", register);
-//router.post("/verify-otp",cache, verifyOTP)
 router.post("/verify-otp", verifyOTP);
-//router.post("/resend-otp", resendOTP)
 router.post("/resend-otp", resendOTP);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);

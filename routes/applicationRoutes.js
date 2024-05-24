@@ -14,7 +14,7 @@ router.post("/applications/:jobId/submit", authenticate, submitApplication);
 router.get("/applications/me", authenticate, getUserApplications);
 router.get("/applications/:appId", authenticate,getApplicationsById );
 router.get("/applications", authenticate, authorize("admin"), getAllApplications);
-router.delete("/applications/:appId/withdraw", authenticate, withdrawApplication);
+router.delete("/applications/:appId/withdraw", authenticate, withdrawApplication)
 
 
 export default router;

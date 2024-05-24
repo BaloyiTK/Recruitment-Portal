@@ -23,7 +23,9 @@ export const authorize = (requiredRole) => {
     const user = req.user;
     const { role } = user;
 
-    if (user && role === requiredRole) {
+    console.log(role)
+
+    if (role === requiredRole) {
       // User has the required role, proceed to the next middleware
       next();
     } else {

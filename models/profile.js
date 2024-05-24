@@ -27,6 +27,7 @@ const profileSchema = new mongoose.Schema({
   status: { type: String },
   position : { type: String },
   qualificationDocuments : { type: String },
+  otherDocuments : { type: String },
   roleDescription: { type: String },
   experience: [
     {

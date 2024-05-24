@@ -1,11 +1,11 @@
 // jobRoutes.js
 import express from "express";
 import createJob from "../controllers/job/createJob.js";
-import { authenticate, authorize } from "../middleswares/authMiddleware.js";
 import getjobs from "../controllers/job/getJobs.js";
 import deleteJob from "../controllers/job/deleteJob.js";
 import getJob from "../controllers/job/getJob.js";
 import updateJob from "../controllers/job/updateJob.js";
+import { authenticate, authorize } from "../middleswares/authMiddleware.js";
 
 const router = express.Router();
 

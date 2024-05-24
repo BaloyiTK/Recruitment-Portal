@@ -11,7 +11,7 @@ const createProfile = asyncHandler(async (req, res) => {
 
     // Extract profile details from the request body
     const { firstName,middleName, lastName, location, dateOfBirth, gender, email,cellNumber,altNumber,position,status , disabilityStatus, citizenship,
-       skills, experience, education, resume } = req.body;
+       skills, experience, education, resume, otherDocuments } = req.body;
 
     // Create a new profile instance with the extracted details
     const newProfile = new Profile({
@@ -32,7 +32,8 @@ const createProfile = asyncHandler(async (req, res) => {
       skills,
       experience,
       education,
-      resume
+      resume,
+      otherDocuments
     });
 
     // Save the new profile to the database

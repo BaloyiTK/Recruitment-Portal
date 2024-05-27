@@ -4,14 +4,28 @@ import Profile from "../../models/profile.js";
 // async handler to handle the create profile functionality
 const createProfile = asyncHandler(async (req, res) => {
   try {
-
-    const user = req.user.userId
-
-    
-
+    const user = req.user.userId;
     // Extract profile details from the request body
-    const { firstName,middleName, lastName, location, dateOfBirth, gender, email,cellNumber,altNumber,position,status , disabilityStatus, citizenship,
-       skills, experience, education, resume, otherDocuments } = req.body;
+    const {
+      firstName,
+      middleName,
+      lastName,
+      location,
+      dateOfBirth,
+      gender,
+      email,
+      cellNumber,
+      altNumber,
+      position,
+      status,
+      disabilityStatus,
+      citizenship,
+      skills,
+      experience,
+      education,
+      resume,
+      otherDocuments,
+    } = req.body;
 
     // Create a new profile instance with the extracted details
     const newProfile = new Profile({
@@ -33,7 +47,7 @@ const createProfile = asyncHandler(async (req, res) => {
       experience,
       education,
       resume,
-      otherDocuments
+      otherDocuments,
     });
 
     // Save the new profile to the database
@@ -47,6 +61,5 @@ const createProfile = asyncHandler(async (req, res) => {
     res.status(500).send(error);
   }
 });
-
 // Export the createProfile function
 export default createProfile;

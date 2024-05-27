@@ -16,8 +16,26 @@ const profileSchema = new mongoose.Schema({
   dateOfBirth: { type: Date },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
   email: { type: String, required: true },
-  cellNumber: { type: String },
-  altNumber: { type: String },
+  cellNumber: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        return /^\d{10}$/.test(v);
+      },
+      message: props => `${props.value} is not a valid 10-digit phone number!`
+    },
+    required: [true, 'Cell number is required']
+  },
+  altNumber: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        return /^\d{10}$/.test(v);
+      },
+      message: props => `${props.value} is not a valid 10-digit phone number!`
+    },
+    required: [true, 'Cell number is required']
+  },
   contactNumber: { type: String },
   disabilityStatus: { type: String },
   citizenship: { type: String },

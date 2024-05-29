@@ -12,7 +12,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
     const token = generateAuthToken(user);
 
-    sendPasswordResetEmail(email,token)
+    sendPasswordResetEmail(email,token, "forgot")
 
     console.log("succses");
 

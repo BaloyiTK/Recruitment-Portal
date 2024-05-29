@@ -98,10 +98,8 @@ const resendOTP = asyncHandler(async (req, res) => {
 
     await sendRegistrationVerificationEmail(recipientEmail, otp);
 
-    // Code to send OTP to user (e.g., via email or SMS) goes here
 
     res.status(200).json({ message: "OTP resent successfully" });
-    // Close the connection to Redis when done
   
   } catch (error) {
     console.error(error);

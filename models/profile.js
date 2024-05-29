@@ -19,22 +19,23 @@ const profileSchema = new mongoose.Schema({
   cellNumber: {
     type: String,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return /^\d{10}$/.test(v);
       },
-      message: props => `${props.value} is not a valid 10-digit phone number!`
+      message: (props) =>
+        `${props.value} is not a valid 10-digit phone number!`,
     },
-    required: [true, 'Cell number is required']
+    required: [true, "Cell number is required"],
   },
   altNumber: {
     type: String,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return /^\d{10}$/.test(v);
       },
-      message: props => `${props.value} is not a valid 10-digit phone number!`
-    },
-    required: [true, 'Cell number is required']
+      message: (props) =>
+        `${props.value} is not a valid 10-digit phone number!`,
+    }
   },
   contactNumber: { type: String },
   disabilityStatus: { type: String },

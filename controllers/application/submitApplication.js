@@ -3,6 +3,7 @@ import JobApplication from "../../models/application.js";
 import Profile from "../../models/profile.js";
 import Job from "../../models/job.js";
 
+
 // async handler to handle the submit application functionality
 const submitApplication = asyncHandler(async (req, res) => {
   try {
@@ -18,6 +19,14 @@ const submitApplication = asyncHandler(async (req, res) => {
     }
 
     const userId = req.user.userId;
+
+    const appliedJob = await JobApplication.findOne({jobId:jobId , userId:userId});
+
+    if (appliedJob) {
+
+      res.send({message:"Job already applied"})
+    }
+
     // Retrieve the user's profile and get the resume
     const userProfile = await Profile.findOne({ user: userId });
     const resume = userProfile ? userProfile.resume : null;

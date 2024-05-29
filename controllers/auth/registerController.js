@@ -17,10 +17,13 @@ const register = asyncHandler(async (req, res) => {
     await checkExistingUser(email);
     validatePassword(password);
     await registerUser(username, email, password);
-  
-    return res.status(201).json({ message: "User registration successful! Please verify your email address." });
+
+    return res.status(201).json({
+      message:
+        "User registration successful! An email has been sent to your inbox with instructions to verify your email address. Please follow the instructions to complete the registration process.",
+    });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message })
   }
 });
 

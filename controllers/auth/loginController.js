@@ -12,7 +12,7 @@ const login = asyncHandler(async (req, res) => {
     validateFields(email, password);
 
     validateEmail(email);
-    await checkNotExistingUser(email);
+   // await checkNotExistingUser(email);
 
     const loginResult = await loginUser(res, email, password);
 

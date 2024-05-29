@@ -9,12 +9,10 @@ import getUserApplications from "../controllers/application/getUserAppllications
 
 const router = express.Router();
 
-// Route for submitting an application
 router.post("/applications/:jobId/submit", authenticate, submitApplication);
 router.get("/applications/me", authenticate, getUserApplications);
 router.get("/applications/:appId", authenticate,getApplicationsById );
 router.get("/applications", authenticate, authorize("admin"), getAllApplications);
 router.delete("/applications/:appId/withdraw", authenticate, withdrawApplication)
-
 
 export default router;

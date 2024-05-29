@@ -30,7 +30,7 @@ const loginUser = async (res, email, password) => {
       user.otp.code = otp;
       await user.save();
       throw new Error(
-        "Email not verified, to complete registration, verify your email. Check your inbox for a verification code. If not received, check spam or request a new code"
+"Email not verified. Please check your inbox for a verification email. If not received, check spam or request a new one."
       );
     }
 

@@ -33,8 +33,9 @@ const resetPassword = asyncHandler(async (req, res) => {
 
     return res.status(200).json({ message: "Password reset successful." });
   } catch (error) {
-    console.error("Error resetting password:", error);
-    return res.status(500).json({ error: "An unexpected error occurred." });
+    console.error("Error resetting password:", error.error);
+  
+    return res.status(500).json(error.message);
   }
 });
 

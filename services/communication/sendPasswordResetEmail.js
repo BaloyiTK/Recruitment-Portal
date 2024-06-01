@@ -5,6 +5,8 @@ import User from "../../models/user.js";
 const sendPasswordResetEmail = async (recipientEmail, resetToken, type) => {
   const user = await User.findOne({ email: recipientEmail });
 
+  console.log(user)
+
   // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",

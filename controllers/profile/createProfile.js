@@ -5,6 +5,13 @@ import Profile from "../../models/profile.js";
 const createProfile = asyncHandler(async (req, res) => {
   try {
     const user = req.user.userId;
+
+    const profile = await Profile.findOne({ user: user });
+
+    if (profile) {
+      return res.status(409).json({ message: "Profile already exist" });
+    }
+
     // Extract profile details from the request body
     const {
       firstName,
@@ -61,5 +68,6 @@ const createProfile = asyncHandler(async (req, res) => {
     res.status(500).send(error);
   }
 });
+
 // Export the createProfile function
 export default createProfile;

@@ -6,8 +6,6 @@ const createJob = asyncHandler(async (req, res) => {
   try {
     // Extract job details from the request body
     const postedBy = req.user.userId;
-
-    console.log(postedBy)
     
     const { title, company, location, salary, description } = req.body;
 

@@ -4,18 +4,20 @@ import nodemailer from "nodemailer";
 
 const sendApplicationStatusUpdateEmail = async (recipientEmail, applicationStatus) => {
   // Create a Nodemailer transporter
-  const transporter = nodemailer.createTransport({
-    // Configure your email service provider here
-    service: "gmail",
-    auth: {
-      user: "your-email@gmail.com",
-      pass: "your-email-password"
-    }
-  });
+ // Create a Nodemailer transporter
+ const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_ADDRESS,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
   // Email message options
   const mailOptions = {
-    from: "your-email@gmail.com",
+    from: process.env.EMAIL_ADDRESS,
     to: recipientEmail,
     subject: "Application Status Update",
     html: `<p>Your application status has been updated.</p>

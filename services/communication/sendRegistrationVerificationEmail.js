@@ -3,15 +3,16 @@ import nodemailer from "nodemailer";
 
 const sendRegistrationVerificationEmail = async (recipientEmail, otp) => {
   // Create a Nodemailer transporter
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_ADDRESS, 
-      pass: process.env.EMAIL_PASS,
-    }
-  });
+ // Create a Nodemailer transporter
+ const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_ADDRESS,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
   // Email message options
   const mailOptions = {

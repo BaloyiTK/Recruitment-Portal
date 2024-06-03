@@ -6,8 +6,21 @@ const createJob = asyncHandler(async (req, res) => {
   try {
     // Extract job details from the request body
     const postedBy = req.user.userId;
-    
-    const { title, company, location, salary, description } = req.body;
+
+    const {
+      title,
+      company,
+      location,
+      salary,
+      description,
+      closingDate,
+      workExperience,
+      employmentType,
+      requirements,
+      skills,
+    } = req.body;
+
+    workExperience, employmentType, closingDate, requirements, skills;
 
     const job = new Job({
       title,
@@ -15,7 +28,12 @@ const createJob = asyncHandler(async (req, res) => {
       location,
       salary,
       description,
-      postedBy 
+      postedBy,
+      closingDate,
+      workExperience,
+      employmentType,
+      requirements,
+      skills,
     });
 
     // Save the job to the database

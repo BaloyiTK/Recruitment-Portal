@@ -2,7 +2,8 @@ import asyncHandler from "express-async-handler";
 import JobApplication from "../../models/application.js";
 import Profile from "../../models/profile.js";
 import Job from "../../models/job.js";
-
+import sendJobApplicationConfirmationEmail from "../../services/communication/sendJobApplicationConfirmationEmail.js";
+import User from "../../models/user.js";
 
 // async handler to handle the submit application functionality
 const submitApplication = asyncHandler(async (req, res) => {
@@ -15,17 +16,20 @@ const submitApplication = asyncHandler(async (req, res) => {
 
     if (!job) {
       res.status(404).json({ message: "Job not found" });
-
     }
 
     const userId = req.user.userId;
 
-    const appliedJob = await JobApplication.findOne({jobId:jobId , userId:userId});
+    const appliedJob = await JobApplication.findOne({
+      jobId: jobId,
+      userId: userId,
+    });
+    const user = await User.findById(userId);
 
-    if (appliedJob) {
+     if (appliedJob) {
 
-      res.send({message:"Job already applied"})
-    }
+       return res.send({message:"Job already applied"})
+     }
 
     // Retrieve the user's profile and get the resume
     const userProfile = await Profile.findOne({ user: userId });
@@ -43,12 +47,13 @@ const submitApplication = asyncHandler(async (req, res) => {
     await newApplication.save();
 
     // Send a success response
-    res
-      .status(201)
-      .json({
-        message: "Application submitted successfully",
-        application: newApplication,
-      });
+
+    sendJobApplicationConfirmationEmail(user.email, job);
+
+    res.status(201).json({
+      message: "Application submitted successfully",
+      application: newApplication,
+    });
   } catch (error) {
     // If an error occurs during application submission, handle it and send an error response
     console.error("Error submitting application:", error);

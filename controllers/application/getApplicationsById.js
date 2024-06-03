@@ -1,31 +1,29 @@
 import asyncHandler from "express-async-handler";
 import JobApplication from "../../models/application.js";
+import sendApplicationStatusUpdateEmail from "../../services/communication/sendApplicationStatusUpdateEmail.js";
 
-// Define an async function to get one user by ID
-const getApplicationsById = asyncHandler(async (req, res) => {
+const getApplicationById = asyncHandler(async (req, res) => {
     try {
-        const appId = req.params.appId;
+        const { appId } = req.params;
+        const { role, email } = req.user;
 
-        const role = req.user.role;
-     
+        const application = await JobApplication.findById(appId);
 
-        const applications = await JobApplication.findById(appId);
+        if (!application) {
+            return res.status(404).json({ message: "Application not found" });
+        }
 
-         if (!applications) {
-             return res.status(404).json({ message: "Application not found" });
-         }
+        if (role === "admin" && application.status === "pending") {
+            application.status = "viewed";
+            await application.save();
+            sendApplicationStatusUpdateEmail(email, "Viewed");
+        }
 
-         if (role=="admin") {
-             applications.status="viewed"
-             await applications.save()
-            
-         }
-
-         res.send(applications);
+        return res.json(application);
     } catch (error) {
         console.error("Error fetching profile:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 });
 
-export default getApplicationsById ;
+export default getApplicationById;

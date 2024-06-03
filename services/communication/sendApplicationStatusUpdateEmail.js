@@ -3,8 +3,9 @@
 import nodemailer from "nodemailer";
 
 const sendApplicationStatusUpdateEmail = async (recipientEmail, applicationStatus) => {
-  // Create a Nodemailer transporter
- // Create a Nodemailer transporter
+
+  console.log(recipientEmail, applicationStatus)
+
  const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: process.env.SMTP_PORT,
@@ -21,7 +22,7 @@ const sendApplicationStatusUpdateEmail = async (recipientEmail, applicationStatu
     to: recipientEmail,
     subject: "Application Status Update",
     html: `<p>Your application status has been updated.</p>
-           <p>New Status: ${applicationStatus}</p>`
+           <p>New Status: ${applicationStatus}, fingers crossed</p>`
   };
 
   try {

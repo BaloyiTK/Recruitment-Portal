@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 
 const sendJobApplicationConfirmationEmail = async (recipientEmail, applicationDetails) => {
   // Create a Nodemailer transporter
- // Create a Nodemailer transporter
+
  const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: process.env.SMTP_PORT,
@@ -14,6 +14,12 @@ const sendJobApplicationConfirmationEmail = async (recipientEmail, applicationDe
   },
 });
 
+const recipients = [
+  { email: 'recipient1@example.com', applicationDetails: { title: 'Title 1', description: 'Description 1' } },
+  { email: 'recipient2@example.com', applicationDetails: { title: 'Title 2', description: 'Description 2' } },
+
+];
+
   // Email message options
   const mailOptions = {
     from: process.env.EMAIL_ADDRESS,
@@ -22,10 +28,9 @@ const sendJobApplicationConfirmationEmail = async (recipientEmail, applicationDe
     html: `<p>Thank you for applying for the job!</p>
            <p>Your application details:</p>
            <ul>
-             <li>Name: ${applicationDetails.name}</li>
-             <li>Email: ${applicationDetails.email}</li>
-             <li>Position: ${applicationDetails.position}</li>
-             <li>Resume: ${applicationDetails.resume}</li>
+             <li>Title: ${applicationDetails.title}</li>
+             <li>Description: ${applicationDetails.description}</li>
+       
            </ul>`
   };
 

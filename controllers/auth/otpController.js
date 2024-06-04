@@ -58,6 +58,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
     setAuthCookie(res, token);
 
     res.status(200).json({ message: "Email verified successfully" });
+    sendRegistrationVerificationEmail(user.email, null, "verified")
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -129,7 +130,7 @@ const registerUser = async (username, email, password) => {
     client.setEx("id", 1000, userId);
   }
 
-  await sendRegistrationVerificationEmail(email, otp); // Send OTP via email
+  await sendRegistrationVerificationEmail(email, otp, null); // Send OTP via email
 };
 
 export { verifyOTP, resendOTP, registerUser };

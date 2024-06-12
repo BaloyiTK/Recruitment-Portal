@@ -18,18 +18,14 @@ export const authenticate = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const authorize = (requiredRole) => {
+export const authorize = (requiredTypes) => {
   return (req, res, next) => {
     const user = req.user;
-    const { role } = user;
-
-    console.log(role)
-
-    if (role === requiredRole) {
-      // User has the required role, proceed to the next middleware
+    const { accountType } = user;
+  
+    if (requiredTypes.includes(accountType)) {
       next();
     } else {
-     
       res
         .status(403)
         .json({ message: "You are not authorized to access this resource" });

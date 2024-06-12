@@ -108,7 +108,9 @@ const resendOTP = asyncHandler(async (req, res) => {
   }
 });
 
-const registerUser = async (username, email, password) => {
+const registerUser = async (username, email, accountType,  password) => {
+
+  console.log(accountType)
   const hashedPassword = await passwordHash(password);
 
   const otp = generateOTP(); // Generate OTP
@@ -117,6 +119,7 @@ const registerUser = async (username, email, password) => {
   const user = await User.create({
     username,
     email,
+    accountType,
     password: hashedPassword,
     otp: {
       code: otp,

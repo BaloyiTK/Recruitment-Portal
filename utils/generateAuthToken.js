@@ -9,7 +9,7 @@ export const generateAuthToken = (user) => {
     userId: user._id,
     username: user.username,
     email: user.email,
-    role: user.role
+    accountType: user.accountType
     // Add other properties if required
   };
 

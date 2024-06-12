@@ -25,11 +25,10 @@ const userSchema = new mongoose.Schema(
           },
           message: "The password must be at least 8 characters long and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), one numeric digit (0-9), and one special character (!@#$%^&*()_+{}[]:;<>,.?/\\~-)."
       }},
-    role: { type: String, required: true, default: "user" },
+    accountType: { type: String, enum: [ 'recruiter', 'jobseeker'] },
     otp: { 
       code: { type: String }, // OTP code
       expires: { type: Date },
-    
     }, 
     isEmailVerified: { type: Boolean, default: false } // Field to indicate whether email is verified
   },

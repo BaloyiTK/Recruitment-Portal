@@ -11,8 +11,8 @@ const getLoggedInUser = asyncHandler(async (req, res) => {
  
   if (user) {
 
-    const { _id, username, email, role } = user;
-    return res.status(200).json({ _id, username, email,role })
+    const { _id, username, email, accountType } = user;
+    return res.status(200).json({ _id, username, email,accountType })
   } else {
     
     res.status(400);

@@ -8,15 +8,17 @@ import validatePassword from "../../services/auth/register/validatePassword.js";
 import { registerUser } from "./otpController.js";
 
 const register = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email,accountType, password } = req.body;
+
+  console.log(accountType)
 
   try {
     // Validate user input
-    validateFields(username, email, password);
+    validateFields(username, email,accountType, password);
     validateEmail(email);
     await checkExistingUser(email);
     validatePassword(password);
-    await registerUser(username, email, password);
+    await registerUser(username, email, accountType, password);
 
     return res.status(201).json({
       message:

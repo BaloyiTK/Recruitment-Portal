@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/applications/:jobId/submit", authenticate, submitApplication);
 router.get("/applications/me", authenticate, getUserApplications);
 router.get("/applications/:appId", authenticate,getApplicationsById );
-router.get("/applications", authenticate, authorize("admin"), getAllApplications);
+router.get("/applications", authenticate, authorize("recruiter"), getAllApplications);
 router.delete("/applications/:appId/withdraw", authenticate, withdrawApplication)
 
 export default router;

@@ -1,6 +1,6 @@
-const validateFields = (username, email, password) => {
+const validateFields = (username, email,accountType, password) => {
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !accountType) {
       throw new Error("Please fill all the required fields!");
     }
   };

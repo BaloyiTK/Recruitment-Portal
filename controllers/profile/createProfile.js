@@ -4,6 +4,7 @@ import Profile from "../../models/profile.js";
 // async handler to handle the create profile functionality
 const createProfile = asyncHandler(async (req, res) => {
   try {
+    
     const user = req.user.userId;
 
     const profile = await Profile.findOne({ user: user });

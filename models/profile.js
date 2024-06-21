@@ -4,6 +4,8 @@ const profileSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   firstName: { type: String, required: true },
   middleName: { type: String },
+  idNumber: { type: String , required: true },
+  Ethnicity: { type: String, required: true},
   lastName: { type: String, required: true },
   location: {
     city: { type: String },

@@ -10,7 +10,11 @@ const resetPassword = asyncHandler(async (req, res) => {
     const { password, passwordConfirm } = req.body;
 
     if (!password || !passwordConfirm) {
-      return res.status(400).json({ error: "Both password and password confirmation are required." });
+      return res
+        .status(400)
+        .json({
+          error: "Both password and password confirmation are required.",
+        });
     }
 
     if (password !== passwordConfirm) {
@@ -29,12 +33,12 @@ const resetPassword = asyncHandler(async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
-    sendPasswordResetEmail(user.email,null, "reset")
+    sendPasswordResetEmail(user.email, null, "reset");
 
     return res.status(200).json({ message: "Password reset successful." });
   } catch (error) {
     console.error("Error resetting password:", error);
-  
+
     return res.status(500).json(error.message);
   }
 });

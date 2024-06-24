@@ -21,7 +21,7 @@ app.use(
   express.json(), // Middleware to parse JSON request bodies
   cors({
     credentials: true,
-    origin: 'http://localhost:3000',
+    origin: '*',
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
   cookieParser()

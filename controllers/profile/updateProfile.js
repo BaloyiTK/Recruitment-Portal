@@ -33,22 +33,22 @@ const updateProfile = asyncHandler(async (req, res) => {
       resume
     } = req.body;
 
-    // Update only the fields that are provided in the request body
-    if (firstName) profile.firstName = firstName;
-    if (lastName) profile.lastName = lastName;
-    if (headline) profile.headline = headline;
-    if (location) profile.location = location;
-    if (dateOfBirth) profile.dateOfBirth = dateOfBirth;
-    if (gender) profile.gender = gender;
-    if (email) profile.email = email;
-    if (contactNumber) profile.contactNumber = contactNumber;
-    if (disabilityStatus) profile.disabilityStatus = disabilityStatus;
-    if (citizenship) profile.citizenship = citizenship;
-    if (skills) profile.skills = skills;
-    if (experience) profile.experience = experience;
-    if (education) profile.education = education;
-    if (resume) profile.resume = resume;
-    
+    // Update profile fields conditionally
+    profile.firstName = firstName || profile.firstName;
+    profile.lastName = lastName || profile.lastName;
+    profile.headline = headline || profile.headline;
+    profile.location = location || profile.location;
+    profile.dateOfBirth = dateOfBirth || profile.dateOfBirth;
+    profile.gender = gender || profile.gender;
+    profile.email = email || profile.email;
+    profile.contactNumber = contactNumber || profile.contactNumber;
+    profile.disabilityStatus = disabilityStatus || profile.disabilityStatus;
+    profile.citizenship = citizenship || profile.citizenship;
+    profile.skills = skills || profile.skills;
+    profile.experience = experience || profile.experience;
+    profile.education = education || profile.education;
+    profile.resume = resume || profile.resume;
+
     // Save the updated profile
     await profile.save();
 

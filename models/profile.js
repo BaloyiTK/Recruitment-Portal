@@ -52,10 +52,10 @@ const profileSchema = new mongoose.Schema({
   roleDescription: { type: String },
   experience: [
     {
-      title: { type: String },
-      company: { type: String},
+      title: { type: String, required: true },
+      company: { type: String, required: true },
       location: { type: String },
-      startDate: { type: Date },
+      startDate: { type: Date, required: true },
       endDate: { type: Date },
       employmentType: {
         type: String,
@@ -66,11 +66,11 @@ const profileSchema = new mongoose.Schema({
   ],
   education: [
     {
-      institution: { type: String },
-      institutionType: { type: String },
-      degree: { type: String },
+      institution: { type: String, required: true },
+      institutionType: { type: String, required: true },
+      degree: { type: String, required: true },
       fieldOfStudy: { type: String },
-      startDate: { type: Date },
+      startDate: { type: Date, required: true },
       endDate: { type: Date },
     },
   ],

@@ -5,6 +5,7 @@ import { authenticate, authorize } from "../middleswares/authMiddleware.js";
 import deleteProfile from "../controllers/profile/deleteProfile.js";
 import updateProfile from "../controllers/profile/updateProfile.js";
 import getUserProfile from "../controllers/profile/getUserProfile.js";
+import getMyProfile from "../controllers/profile/getMyProfile.js";
 
 const router = express.Router();
 

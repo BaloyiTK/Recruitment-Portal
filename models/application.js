@@ -1,36 +1,36 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 const jobApplicationSchema = new Schema({
   jobId: {
     type: Schema.Types.ObjectId,
-    ref: 'Job',
-    required: true
+    ref: "Job",
+    required: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   // Reference the Profile model for the resume
   resume: {
     type: String,
-    ref: 'Profile', 
-    required: true
+    ref: "Profile",
+    required: true,
   },
   coverLetter: String,
   status: {
     type: String,
-    enum: ['pending','viewed', 'accepted', 'rejected'],
-    default: 'pending'
+    enum: ["pending", "viewed", "accepted", "rejected"],
+    default: "pending",
   },
   appliedDate: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-const JobApplication = mongoose.model('JobApplication', jobApplicationSchema);
+const JobApplication = mongoose.model("JobApplication", jobApplicationSchema);
 
 export default JobApplication;

@@ -4,8 +4,8 @@ const profileSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   firstName: { type: String, required: true },
   middleName: { type: String },
-  idNumber: { type: String , required: true },
-  Ethnicity: { type: String, required: true},
+  idNumber: { type: String, required: true },
+  Ethnicity: { type: String, required: true },
   lastName: { type: String, required: true },
   location: {
     city: { type: String },
@@ -37,7 +37,7 @@ const profileSchema = new mongoose.Schema({
       },
       message: (props) =>
         `${props.value} is not a valid 10-digit phone number!`,
-    }
+    },
   },
   contactNumber: { type: String },
   disabilityStatus: { type: String },

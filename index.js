@@ -16,21 +16,22 @@ dotenv.config();
 const app = express();
 
 const uri = process.env.DATABASE_URI;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
-app.use(
-  express.json(), // Middleware to parse JSON request bodies
-  cors({
-    credentials: true,
-    origin: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-  cookieParser()
-);
-
+// Middleware
+app.use(express.json()); // Middleware to parse JSON request bodies
 app.use(cookieParser());
 
-// Simple test route
+// CORS Middleware
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// Routes
 app.get("/", (req, res) => {
   res.send("Welcome to the recruitment portal!");
 });
@@ -41,6 +42,7 @@ app.use("/", profileRouter);
 app.use("/", jobRouter);
 app.use("/", applicationRouter);
 
+// Connect to MongoDB
 mongoose
   .connect(uri)
   .then(() => {
@@ -53,4 +55,5 @@ mongoose
     console.error("Error connecting to the database:", err.message);
   });
 
+// Error Handler Middleware
 app.use(errorHandler);

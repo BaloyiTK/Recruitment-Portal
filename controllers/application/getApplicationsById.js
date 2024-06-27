@@ -13,7 +13,7 @@ const getApplicationById = asyncHandler(async (req, res) => {
             return res.status(404).json({ message: "Application not found" });
         }
 
-        if (role === "admin" && application.status === "pending") {
+        if (role === "recruiter" && application.status === "pending") {
             application.status = "viewed";
             await application.save();
             sendApplicationStatusUpdateEmail(email, "Viewed");

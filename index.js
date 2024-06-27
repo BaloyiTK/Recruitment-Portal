@@ -10,6 +10,7 @@ import jobRouter from "./routes/jobRoutes.js";
 import applicationRouter from "./routes/applicationRoutes.js";
 import errorHandler from "./middleswares/errorMiddleware.js";
 
+
 dotenv.config();
 
 const app = express();
@@ -26,6 +27,8 @@ app.use(
   }),
   cookieParser()
 );
+
+app.use(cookieParser());
 
 // Simple test route
 app.get("/", (req, res) => {

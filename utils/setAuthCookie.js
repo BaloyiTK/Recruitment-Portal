@@ -5,7 +5,7 @@ const setAuthCookie = (res, token) => {
       secure: true,
       expires: tokenExpires,
       path: "/",
-      sameSite: "none",
+      sameSite: "strict",
     });
   };
   

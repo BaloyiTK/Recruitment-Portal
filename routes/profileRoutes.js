@@ -5,12 +5,11 @@ import { authenticate, authorize } from "../middleswares/authMiddleware.js";
 import deleteProfile from "../controllers/profile/deleteProfile.js";
 import updateProfile from "../controllers/profile/updateProfile.js";
 import getUserProfile from "../controllers/profile/getUserProfile.js";
-import getMyProfile from "../controllers/profile/getMyProfile.js";
 
 const router = express.Router();
 
 router.get("/profile", authenticate, getMyProfile);
-router.get("/profile/:userId", authenticate, authorize(["jobseeker"]), getUserProfile);
+router.get("/profile/:userId", authenticate, authorize(["recruiter"]), getUserProfile);
 router.post("/profile", authenticate, createProfile);
 router.patch("/profile", authenticate, updateProfile);
 router.patch("/profile", authenticate, updateProfile);

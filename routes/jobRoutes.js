@@ -8,12 +8,14 @@ import { authenticate, authorize } from "../middleswares/authMiddleware.js";
 import getRecruiterjobs from "../controllers/job/getJobs.js";
 import getJobs from "../controllers/job/getJobs.js";
 
+
 const router = express.Router();
 
 router.post("/jobs", authenticate, authorize("recruiter"), createJob);
 router.get("/jobs/:jobId", getJob);
-//router.get("/jobs", getAlljobs);
-router.get("/jobs", authenticate, authorize(["recruiter", "jobseeker"]), getJobs);
+router.get("/jobs", getJobs);
+router.get("/jobs/org/recruiter", authenticate, authorize(["recruiter"]), getRecruiterjobs);
+//router.get("/jobs/recruiter", authenticate, authorize(["recruiter", "jobseeker"]), getRecruiterjobs)
 router.patch("/job/:jobId", authenticate, authorize("recruiter"), updateJob);
 router.delete("/job/:jobId", authenticate, authorize("recruiter"), deleteJob);
 

@@ -5,8 +5,8 @@ import deleteJob from "../controllers/job/deleteJob.js";
 import getJob from "../controllers/job/getJob.js";
 import updateJob from "../controllers/job/updateJob.js";
 import { authenticate, authorize } from "../middleswares/authMiddleware.js";
-import getRecruiterjobs from "../controllers/job/getJobs.js";
 import getJobs from "../controllers/job/getJobs.js";
+import getRecruiterjobs from "../controllers/job/getRecruiterJobs.js";
 
 
 const router = express.Router();

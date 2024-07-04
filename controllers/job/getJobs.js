@@ -6,6 +6,9 @@ const getJobs = asyncHandler(async (req, res) => {
   try {
    
      const jobs = await Job.find();
+
+
+     console.log("get jobs")
   
     if (!jobs) {
       return res.status(404).json({ message: "Jobs not found" });

@@ -60,12 +60,18 @@ const createProfile = asyncHandler(async (req, res) => {
     };
 
 
+if (condition) {
+  
+}
+let resumeUrl; 
+if (resume) {
 
-    const result = await cloudinary.uploader.upload(resume, uploadOptions);
+  const result = await cloudinary.uploader.upload(resume, uploadOptions);
+  resumeUrl  = result.secure_url;
+  
+}
 
- 
-
-    const resumeUrl = result.secure_url;
+    
 
     // Create a new profile instance with the extracted details
     const newProfile = new Profile({

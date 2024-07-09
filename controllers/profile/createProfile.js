@@ -12,22 +12,21 @@ cloudinary.config({
 // async handler to handle the create profile functionality
 const createProfile = asyncHandler(async (req, res) => {
   try {
-    const user = req.user.userId;
-    const username = req.user.username;
+    const { userId, username } = req.user; // Destructure userId and username from req.user
 
-    const profile = await Profile.findOne({ user });
-
+    // Check if profile already exists for the user
+    const profile = await Profile.findOne({ user: userId });
     if (profile) {
       return res.status(409).json({ message: "Profile already exists" });
     }
 
-    // Extract profile details from the request body
+    // Destructure profile details from the request body
     const {
       firstName,
       middleName,
       lastName,
       idNumber,
-      Ethnicity,
+      ethnicity,
       location,
       dateOfBirth,
       gender,
@@ -45,42 +44,31 @@ const createProfile = asyncHandler(async (req, res) => {
       otherDocuments,
     } = req.body;
 
-  
+    let resumeUrl = null; // Initialize resumeUrl variable
 
-   
+    // Upload resume to Cloudinary if resume exists in the request body
+    if (resume) {
+      const uploadOptions = {
+        folder: 'resume',
+        public_id: `resume_${username}_${Date.now()}`,
+        resource_type: "auto", // Use "auto" to automatically detect file type
+        allowed_formats: ["docx", "doc", "pdf"], // Specify allowed formats
+        chunk_size: 6000000, // Adjust chunk size as per your requirement
+        timeout: 600000, // Adjust timeout in milliseconds as per your requirement
+      };
 
-    // Upload resume to Cloudinary with custom public_id and folder
-    const uploadOptions = {
-      folder: 'resume', // Folder in Cloudinary
-      public_id: `resume_${username}_${Date.now()}`, // Custom public_id with timestamp
-      resource_type: "raw", // Automatically determine the type of file
-      allowed_formats: ["docx", "doc"], // Specify allowed formats
-      chunk_size: 6000000, // Adjust chunk size as per your requirement
-      timeout: 600000, // Adjust timeout in milliseconds as per your requirement
-    };
-
-
-if (condition) {
-  
-}
-let resumeUrl; 
-if (resume) {
-
-  const result = await cloudinary.uploader.upload(resume, uploadOptions);
-  resumeUrl  = result.secure_url;
-  
-}
-
-    
+      const result = await cloudinary.uploader.upload(resume, uploadOptions);
+      resumeUrl = result.secure_url; // Store the secure URL of the uploaded resume
+    }
 
     // Create a new profile instance with the extracted details
     const newProfile = new Profile({
-      user,
+      user: userId,
       firstName,
       middleName,
       lastName,
       idNumber,
-      Ethnicity,
+      ethnicity,
       location,
       position,
       status,
@@ -106,7 +94,7 @@ if (resume) {
   } catch (error) {
     // If an error occurs during profile creation, handle it and send an error response
     console.error("Error creating profile:", error);
-    res.status(500).send({ message: "Failed to create profile", error });
+    res.status(500).json({ message: "Failed to create profile", error: error.message });
   }
 });
 

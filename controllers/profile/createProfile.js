@@ -47,10 +47,7 @@ const createProfile = asyncHandler(async (req, res) => {
 
   
 
-    // Ensure the resume file is provided
-    if (!resume) {
-      return res.status(400).json({ message: "Resume file is required" });
-    }
+   
 
     // Upload resume to Cloudinary with custom public_id and folder
     const uploadOptions = {

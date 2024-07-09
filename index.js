@@ -10,7 +10,6 @@ import jobRouter from "./routes/jobRoutes.js";
 import applicationRouter from "./routes/applicationRoutes.js";
 import errorHandler from "./middleswares/errorMiddleware.js";
 
-
 dotenv.config();
 
 const app = express();
@@ -18,19 +17,19 @@ const app = express();
 const uri = process.env.DATABASE_URI;
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(express.json()); // Middleware to parse JSON request bodies
-app.use(cookieParser());
 
-// CORS Middleware
 app.use(
   cors({
     credentials: true,
- //   origin: ['http://localhost:3000', 'http://localhost:3001'],
- origin: true,
+    origin: true, // Set origin to true to allow all origins
     allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200,
   })
 );
+
+app.use(cookieParser());
+app.use(express.json({ limit: "20mb" }));
+app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 // Routes
 app.get("/", (req, res) => {

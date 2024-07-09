@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const profileSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  firstName: { type: String, required: true },
+  firstName: { type: String },
   middleName: { type: String },
-  idNumber: { type: String, required: true },
-  Ethnicity: { type: String, required: true },
-  lastName: { type: String, required: true },
+  idNumber: { type: String },
+  Ethnicity: { type: String },
+  lastName: { type: String},
   location: {
     city: { type: String },
     address: { type: String },
@@ -17,7 +17,7 @@ const profileSchema = new mongoose.Schema({
   },
   dateOfBirth: { type: Date },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
-  email: { type: String, required: true },
+  email: { type: String},
   cellNumber: {
     type: String,
     validate: {
@@ -27,7 +27,7 @@ const profileSchema = new mongoose.Schema({
       message: (props) =>
         `${props.value} is not a valid 10-digit phone number!`,
     },
-    required: [true, "Cell number is required"],
+   // required: [true, "Cell number is required"],
   },
   altNumber: {
     type: String,

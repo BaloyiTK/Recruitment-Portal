@@ -39,18 +39,18 @@ const verifyOTP = asyncHandler(async (req, res) => {
     await client.set("id", userId);
 
     const value = await client.get("id");
-    console.log(value);
+ 
 
     const otpExpiration = user.otp.expires;
     const currentTime = new Date();
 
-    console.log(currentTime > otpExpiration);
 
-    if (currentTime > otpExpiration) {
-      user.otp = null;
-      await user.save();
-      return res.status(400).json({ message: "OTP has expired" });
-    }
+
+    //  if (currentTime > otpExpiration) {
+    //   user.otp = null;
+    //    await user.save();
+    //    return res.status(400).json({ message: "OTP has expired" });
+    //  }
 
     user.isEmailVerified = true;
     user.otp = null;
@@ -91,7 +91,7 @@ const resendOTP = asyncHandler(async (req, res) => {
     const recipientEmail = user.email;
     const otp = generateOTP();
 
-    const otpExpiration = new Date(Date.now() + 1 * 60 * 1000); // Expiration time: 5 minutes from now
+    const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); 
 
     user.otp.code = otp;
 
@@ -116,7 +116,7 @@ const registerUser = async (username, email, accountType,  password) => {
   const hashedPassword = await passwordHash(password);
 
   const otp = generateOTP(); // Generate OTP
-  const otpExpiration = new Date(Date.now() + 1 * 60 * 1000); // Expiration time: 30 minutes from now
+  const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); 
 
   const user = await User.create({
     username,

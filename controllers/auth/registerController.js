@@ -10,8 +10,6 @@ import { registerUser } from "./otpController.js";
 const register = asyncHandler(async (req, res) => {
   const { username, email,accountType, password } = req.body;
 
-  console.log(accountType)
-
   try {
     // Validate user input
     validateFields(username, email,accountType, password);

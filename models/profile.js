@@ -5,8 +5,8 @@ const profileSchema = new mongoose.Schema({
   firstName: { type: String },
   middleName: { type: String },
   idNumber: { type: String },
-  Ethnicity: { type: String },
-  lastName: { type: String},
+  ethnicity: { type: String },
+  lastName: { type: String },
   location: {
     city: { type: String },
     address: { type: String },
@@ -17,7 +17,7 @@ const profileSchema = new mongoose.Schema({
   },
   dateOfBirth: { type: Date },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
-  email: { type: String},
+  email: { type: String },
   cellNumber: {
     type: String,
     validate: {
@@ -27,7 +27,6 @@ const profileSchema = new mongoose.Schema({
       message: (props) =>
         `${props.value} is not a valid 10-digit phone number!`,
     },
-   // required: [true, "Cell number is required"],
   },
   altNumber: {
     type: String,
@@ -44,7 +43,7 @@ const profileSchema = new mongoose.Schema({
   citizenship: { type: String },
   skills: [{ type: String }],
   attendedProgram: { type: Boolean },
-  hasExprience: { type: Boolean },
+  hasExperience: { type: Boolean },
   status: { type: String },
   position: { type: String },
   qualificationDocuments: { type: String },

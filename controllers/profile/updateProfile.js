@@ -10,9 +10,7 @@ const updateProfile = asyncHandler(async (req, res) => {
 
     // If the profile doesn't exist, create a new one
     if (!profile) {
-      profile = new Profile({
-        user: userId
-      });
+      profile = new Profile({ user: userId });
     }
 
     // Extract profile details from the request body
@@ -45,58 +43,83 @@ const updateProfile = asyncHandler(async (req, res) => {
     } = req.body;
 
     // Update profile fields conditionally
-    profile.firstName = firstName || profile.firstName;
-    profile.lastName = lastName || profile.lastName;
-    profile.headline = headline || profile.headline;
-    profile.idNumber = idNumber || profile.idNumber;
-    profile.ethnicity = ethnicity || profile.ethnicity;
-    profile.location = location || profile.location;
-    profile.dateOfBirth = dateOfBirth || profile.dateOfBirth;
-    profile.gender = gender || profile.gender;
-    profile.email = email || profile.email;
-    profile.cellNumber = cellNumber || profile.cellNumber;
-    profile.altNumber = altNumber || profile.altNumber;
-    profile.contactNumber = contactNumber || profile.contactNumber;
-    profile.disabilityStatus = disabilityStatus || profile.disabilityStatus;
-    profile.citizenship = citizenship || profile.citizenship;
-    profile.skills = skills || profile.skills;
-    profile.attendedProgram = attendedProgram || profile.attendedProgram;
-    profile.hasExperience = hasExperience || profile.hasExperience;
-    profile.status = status || profile.status;
-    profile.position = position || profile.position;
-    profile.qualificationDocuments = qualificationDocuments || profile.qualificationDocuments;
-    profile.otherDocuments = otherDocuments || profile.otherDocuments;
-    profile.roleDescription = roleDescription || profile.roleDescription;
-    profile.resume = resume || profile.resume;
+    if (firstName !== undefined) profile.firstName = firstName;
+    if (lastName !== undefined) profile.lastName = lastName;
+    if (headline !== undefined) profile.headline = headline;
+    if (idNumber !== undefined) profile.idNumber = idNumber;
+    if (ethnicity !== undefined) profile.ethnicity = ethnicity;
+    if (location !== undefined) profile.location = location;
+    if (dateOfBirth !== undefined) profile.dateOfBirth = dateOfBirth;
+    if (gender !== undefined) profile.gender = gender;
+    if (email !== undefined) profile.email = email;
+    if (cellNumber !== undefined) profile.cellNumber = cellNumber;
+    if (altNumber !== undefined) profile.altNumber = altNumber;
+    if (contactNumber !== undefined) profile.contactNumber = contactNumber;
+    if (disabilityStatus !== undefined) profile.disabilityStatus = disabilityStatus;
+    if (citizenship !== undefined) profile.citizenship = citizenship;
+    if (skills !== undefined) profile.skills = skills;
+    if (attendedProgram !== undefined) profile.attendedProgram = attendedProgram;
+    if (hasExperience !== undefined) profile.hasExperience = hasExperience;
+    if (status !== undefined) profile.status = status;
+    if (position !== undefined) profile.position = position;
+    if (qualificationDocuments !== undefined) profile.qualificationDocuments = qualificationDocuments;
+    if (otherDocuments !== undefined) profile.otherDocuments = otherDocuments;
+    if (roleDescription !== undefined) profile.roleDescription = roleDescription;
+    if (resume !== undefined) profile.resume = resume;
 
-    // Update experience array if provided
-    if (experience && experience.length > 0) {
-      experience.forEach((exp, index) => {
-        if (!profile.experience[index]) {
-          profile.experience[index] = {}; // Initialize if undefined
+    // Update or append to experience array if provided
+    if (experience && Array.isArray(experience)) {
+      experience.forEach((exp) => {
+        // Check if the experience entry already exists
+        const existingExp = profile.experience.id(exp._id);
+        if (existingExp) {
+          // Update existing experience
+          existingExp.title = exp.title || existingExp.title;
+          existingExp.company = exp.company || existingExp.company;
+          existingExp.location = exp.location || existingExp.location;
+          existingExp.startDate = exp.startDate || existingExp.startDate;
+          existingExp.endDate = exp.endDate || existingExp.endDate;
+          existingExp.employmentType = exp.employmentType || existingExp.employmentType;
+          existingExp.responsibilities = exp.responsibilities || existingExp.responsibilities;
+        } else {
+          // Append new experience
+          profile.experience.push({
+            title: exp.title || "",
+            company: exp.company || "",
+            location: exp.location || "",
+            startDate: exp.startDate || "",
+            endDate: exp.endDate || "",
+            employmentType: exp.employmentType || "",
+            responsibilities: exp.responsibilities || ""
+          });
         }
-        profile.experience[index].title = exp.title || profile.experience[index].title;
-        profile.experience[index].company = exp.company || profile.experience[index].company;
-        profile.experience[index].location = exp.location || profile.experience[index].location;
-        profile.experience[index].startDate = exp.startDate || profile.experience[index].startDate;
-        profile.experience[index].endDate = exp.endDate || profile.experience[index].endDate;
-        profile.experience[index].employmentType = exp.employmentType || profile.experience[index].employmentType;
-        profile.experience[index].responsibilities = exp.responsibilities || profile.experience[index].responsibilities;
       });
     }
 
-    // Update education array if provided
-    if (education && education.length > 0) {
-      education.forEach((edu, index) => {
-        if (!profile.education[index]) {
-          profile.education[index] = {}; // Initialize if undefined
+    // Update or append to education array if provided
+    if (education && Array.isArray(education)) {
+      education.forEach((edu) => {
+        // Check if the education entry already exists
+        const existingEdu = profile.education.id(edu._id);
+        if (existingEdu) {
+          // Update existing education
+          existingEdu.institution = edu.institution || existingEdu.institution;
+          existingEdu.institutionType = edu.institutionType || existingEdu.institutionType;
+          existingEdu.degree = edu.degree || existingEdu.degree;
+          existingEdu.fieldOfStudy = edu.fieldOfStudy || existingEdu.fieldOfStudy;
+          existingEdu.startDate = edu.startDate || existingEdu.startDate;
+          existingEdu.endDate = edu.endDate || existingEdu.endDate;
+        } else {
+          // Append new education
+          profile.education.push({
+            institution: edu.institution || "",
+            institutionType: edu.institutionType || "",
+            degree: edu.degree || "",
+            fieldOfStudy: edu.fieldOfStudy || "",
+            startDate: edu.startDate || "",
+            endDate: edu.endDate || ""
+          });
         }
-        profile.education[index].institution = edu.institution || profile.education[index].institution;
-        profile.education[index].institutionType = edu.institutionType || profile.education[index].institutionType;
-        profile.education[index].degree = edu.degree || profile.education[index].degree;
-        profile.education[index].fieldOfStudy = edu.fieldOfStudy || profile.education[index].fieldOfStudy;
-        profile.education[index].startDate = edu.startDate || profile.education[index].startDate;
-        profile.education[index].endDate = edu.endDate || profile.education[index].endDate;
       });
     }
 
@@ -105,8 +128,8 @@ const updateProfile = asyncHandler(async (req, res) => {
 
     res.status(200).json({ success: true, message: "Profile updated successfully" });
   } catch (error) {
-    console.error("Error updating user:", error);
-    return res.status(500).send("Internal Server Error");
+    console.error("Error updating profile:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

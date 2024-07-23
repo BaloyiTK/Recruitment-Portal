@@ -7,6 +7,8 @@ import generateOTP from "../../utils/generateOTP.js";
 import sendRegistrationVerificationEmail from "../../services/communication/sendRegistrationVerificationEmail.js";
 import { passwordHash } from "../../utils/passwordHash.js";
 import redis from "redis";
+import Profile from "../../models/profile.js";
+
 
 const client = redis.createClient({
   password: process.env.REDIS_PASSWORD,
@@ -110,7 +112,7 @@ const resendOTP = asyncHandler(async (req, res) => {
 
 const registerUser = async (username, email, accountType,  password) => {
 
-  console.log(accountType)
+ 
   const hashedPassword = await passwordHash(password);
 
   const otp = generateOTP(); // Generate OTP
@@ -133,7 +135,53 @@ const registerUser = async (username, email, accountType,  password) => {
     client.setEx("id", 1000, userId);
   }
 
+  createProfile()
+
+
   await sendRegistrationVerificationEmail(email, otp, null); // Send OTP via email
 };
 
-export { verifyOTP, resendOTP, registerUser };
+
+const createProfile = async () => {
+
+  try {
+
+    const userId = await client.get("id");
+
+    const user = await User.findById(userId)
+    
+    // Check if profile already exists for the user
+    const profile = await Profile.findOne({ user: userId });
+    if (profile) {
+      return res.status(409).json({ message: "Profile already exists" });
+    }
+
+    // Destructure profile details from the request body
+    const {
+   
+      email,
+     
+    } = user;
+
+ 
+    const newProfile = new Profile({
+      user: userId,
+      email,
+    });
+
+    // Save the new profile to the database
+    await newProfile.save();
+
+    // Send the newly created profile as a response
+   // res.status(201).json(newProfile);
+  } catch (error) {
+    // If an error occurs during profile creation, handle it and send an error response
+    console.error("Error creating profile:", error);
+    res.status(500).json({ message: "Failed to create profile", error: error.message });
+  }
+
+  
+};
+
+
+export { verifyOTP, resendOTP, registerUser, createProfile };

@@ -13,11 +13,9 @@ const router = express.Router();
 
 router.get("/profile", authenticate, getMyProfile);
 router.get("/profile/:userId", authenticate, authorize(["recruiter"]), getUserProfile);
-//router.post("/profile", authenticate, createProfile);
 router.patch("/profile", authenticate, updateProfile);
 router.delete("/profile/experience/:experienceId", authenticate, deleteProfileExprience);
 router.delete("/profile/education/:educationId", authenticate, deleteProfileEducation);
-
 router.delete("/profile",authenticate, deleteProfile);
 
 export default router;

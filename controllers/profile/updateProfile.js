@@ -1,5 +1,13 @@
 import asyncHandler from "express-async-handler";
 import Profile from "../../models/profile.js";
+import { v2 as cloudinary } from 'cloudinary';
+
+// Use environment variables for sensitive data
+cloudinary.config({ 
+  cloud_name: 'dz5avxnag', 
+  api_key: 734462673897543, 
+  api_secret: 'Z7E57J6W_a8uMvQ9vsvTd1jOyAA'
+});
 
 const updateProfile = asyncHandler(async (req, res) => {
   try {
@@ -17,6 +25,7 @@ const updateProfile = asyncHandler(async (req, res) => {
     const {
       firstName,
       lastName,
+      profilePicture,
       headline,
       idNumber,
       ethnicity,
@@ -39,9 +48,11 @@ const updateProfile = asyncHandler(async (req, res) => {
       roleDescription,
       experience,
       education,
-      resume
+      resume,
     } = req.body;
 
+  
+    
     // Update profile fields conditionally
     if (firstName !== undefined) profile.firstName = firstName;
     if (lastName !== undefined) profile.lastName = lastName;
@@ -67,31 +78,26 @@ const updateProfile = asyncHandler(async (req, res) => {
     if (roleDescription !== undefined) profile.roleDescription = roleDescription;
     if (resume !== undefined) profile.resume = resume;
 
+
+    if (profilePicture) {
+      try {
+        // Upload resume to Cloudinary
+        const cloudinaryResponse = await cloudinary.uploader.upload('https://i.dailymail.co.uk/1s/2024/07/11/19/87218215-13625093-image-a-39_1720721817987.jpg');
+        profile.profilePicture = cloudinaryResponse.secure_url;
+      } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        return res.status(500).json({ success: false, message: "Error uploading resume" });
+      }
+    }
+
     // Update or append to experience array if provided
     if (experience && Array.isArray(experience)) {
       experience.forEach((exp) => {
-        // Check if the experience entry already exists
         const existingExp = profile.experience.id(exp._id);
         if (existingExp) {
-          // Update existing experience
-          existingExp.title = exp.title || existingExp.title;
-          existingExp.company = exp.company || existingExp.company;
-          existingExp.location = exp.location || existingExp.location;
-          existingExp.startDate = exp.startDate || existingExp.startDate;
-          existingExp.endDate = exp.endDate || existingExp.endDate;
-          existingExp.employmentType = exp.employmentType || existingExp.employmentType;
-          existingExp.responsibilities = exp.responsibilities || existingExp.responsibilities;
+          Object.assign(existingExp, exp);
         } else {
-          // Append new experience
-          profile.experience.push({
-            title: exp.title || "",
-            company: exp.company || "",
-            location: exp.location || "",
-            startDate: exp.startDate || "",
-            endDate: exp.endDate || "",
-            employmentType: exp.employmentType || "",
-            responsibilities: exp.responsibilities || ""
-          });
+          profile.experience.push(exp);
         }
       });
     }
@@ -99,26 +105,11 @@ const updateProfile = asyncHandler(async (req, res) => {
     // Update or append to education array if provided
     if (education && Array.isArray(education)) {
       education.forEach((edu) => {
-        // Check if the education entry already exists
         const existingEdu = profile.education.id(edu._id);
         if (existingEdu) {
-          // Update existing education
-          existingEdu.institution = edu.institution || existingEdu.institution;
-          existingEdu.institutionType = edu.institutionType || existingEdu.institutionType;
-          existingEdu.degree = edu.degree || existingEdu.degree;
-          existingEdu.fieldOfStudy = edu.fieldOfStudy || existingEdu.fieldOfStudy;
-          existingEdu.startDate = edu.startDate || existingEdu.startDate;
-          existingEdu.endDate = edu.endDate || existingEdu.endDate;
+          Object.assign(existingEdu, edu);
         } else {
-          // Append new education
-          profile.education.push({
-            institution: edu.institution || "",
-            institutionType: edu.institutionType || "",
-            degree: edu.degree || "",
-            fieldOfStudy: edu.fieldOfStudy || "",
-            startDate: edu.startDate || "",
-            endDate: edu.endDate || ""
-          });
+          profile.education.push(edu);
         }
       });
     }
@@ -126,7 +117,7 @@ const updateProfile = asyncHandler(async (req, res) => {
     // Save the updated profile
     await profile.save();
 
-    res.status(200).json({ success: true, message: "Profile updated successfully" });
+    res.status(200).json({ success: true, message: "Profile updated successfully" , profile});
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).send("Internal Server Error");

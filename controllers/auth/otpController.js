@@ -142,14 +142,12 @@ const registerUser = async (username, email, accountType,  password) => {
 };
 
 
-const createProfile = async () => {
-
+const createProfile = asyncHandler(async (req, res) => {
   try {
-
     const userId = await client.get("id");
 
-    const user = await User.findById(userId)
-    
+    const user = await User.findById(userId);
+
     // Check if profile already exists for the user
     const profile = await Profile.findOne({ user: userId });
     if (profile) {
@@ -157,13 +155,8 @@ const createProfile = async () => {
     }
 
     // Destructure profile details from the request body
-    const {
-   
-      email,
-     
-    } = user;
+    const { email } = user;
 
- 
     const newProfile = new Profile({
       user: userId,
       email,
@@ -173,15 +166,14 @@ const createProfile = async () => {
     await newProfile.save();
 
     // Send the newly created profile as a response
-   // res.status(201).json(newProfile);
+    //res.status(201).json(newProfile);
   } catch (error) {
     // If an error occurs during profile creation, handle it and send an error response
     console.error("Error creating profile:", error);
-    res.status(500).json({ message: "Failed to create profile", error: error.message });
+   // res.status(500).json({ message: "Internal Server Error" });
   }
-
-  
-};
+});
 
 
-export { verifyOTP, resendOTP, registerUser, createProfile };
+
+export { verifyOTP, resendOTP, registerUser, createProfile }

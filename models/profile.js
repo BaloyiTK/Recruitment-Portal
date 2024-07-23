@@ -2,80 +2,74 @@ import mongoose from "mongoose";
 
 const profileSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  firstName: { type: String },
-  middleName: { type: String },
-  idNumber: { type: String },
-  ethnicity: { type: String },
-  lastName: { type: String },
+  profilePicture: { type: String, default: "" },
+  firstName: { type: String, default: "" },
+  middleName: { type: String, default: "" },
+  idNumber: { type: String, default: "" },
+  ethnicity: { type: String, default: "" },
+  lastName: { type: String, default: "" },
   location: {
-    city: { type: String },
-    address: { type: String },
-    province: { type: String },
-    street: { type: String },
-    zipCode: { type: String },
-    country: { type: String },
+    city: { type: String, default: "" },
+    address: { type: String, default: "" },
+    province: { type: String, default: "" },
+    street: { type: String, default: "" },
+    zipCode: { type: String, default: "" },
+    country: { type: String, default: "" },
   },
-  dateOfBirth: { type: Date },
-  gender: { type: String, enum: ["Male", "Female", "Other"] },
-  email: { type: String },
+  dateOfBirth: { type: Date, default: null },
+  gender: { type: String, default: "" },
+  email: { type: String, required: true },
   cellNumber: {
     type: String,
-    validate: {
-      validator: function (v) {
-        return /^\d{10}$/.test(v);
-      },
-      message: (props) =>
-        `${props.value} is not a valid 10-digit phone number!`,
-    },
+    default: "",
+ 
   },
   altNumber: {
     type: String,
-    validate: {
-      validator: function (v) {
-        return /^\d{10}$/.test(v);
-      },
-      message: (props) =>
-        `${props.value} is not a valid 10-digit phone number!`,
-    },
+    default: "",
+  
   },
-  contactNumber: { type: String },
-  disabilityStatus: { type: String },
-  citizenship: { type: String },
-  skills: [{ type: String }],
-  attendedProgram: { type: Boolean },
-  hasExperience: { type: Boolean },
-  status: { type: String },
-  position: { type: String },
-  qualificationDocuments: { type: String },
-  otherDocuments: [{ type: String }],
-  roleDescription: { type: String },
+  contactNumber: { type: String, default: "" },
+  disabilityStatus: { type: String, default: "" },
+  citizenship: { type: String, default: "" },
+  skills: [{ type: String, default: "" }],
+  attendedProgram: { type: Boolean, default: false },
+  hasExperience: { type: Boolean, default: false },
+  status: { type: String, default: "" },
+  position: { type: String, default: "" },
+  qualificationDocuments: { type: String, default: "" },
+  otherDocuments: [{ type: String, default: "" }],
+  roleDescription: { type: String, default: "" },
   experience: [
     {
-      title: { type: String, required: true },
-      company: { type: String, required: true },
-      location: { type: String },
-      startDate: { type: Date, required: true },
-      endDate: { type: Date },
+      title: { type: String, default: "" },
+      company: { type: String, default: "" },
+      location: { type: String, default: "" },
+      startDate: { type: Date, default: null },
+      endDate: { type: Date, default: null },
       employmentType: {
         type: String,
-        enum: ["full-time", "part-time", "contract", "temporary", "internship"],
+      
+        default: ""
       },
-      responsibilities: { type: String },
+      responsibilities: { type: String, default: "" },
     },
   ],
   education: [
     {
-      institution: { type: String, required: true },
-      institutionType: { type: String, required: true },
-      degree: { type: String, required: true },
-      fieldOfStudy: { type: String },
-      startDate: { type: Date, required: true },
-      endDate: { type: Date },
+      institution: { type: String, default: "" },
+      institutionType: { type: String, default: "" },
+      degree: { type: String, default: "" },
+      fieldOfStudy: { type: String, default: "" },
+      startDate: { type: Date, default: null },
+      endDate: { type: Date, default: null },
     },
   ],
-  resume: { type: String },
+  resume: { type: String, default: "" },
   createdAt: { type: Date, default: Date.now },
 });
+
+profileSchema.index({ user: 1 }); // Indexing user for better query performance
 
 const Profile = mongoose.model("Profile", profileSchema);
 

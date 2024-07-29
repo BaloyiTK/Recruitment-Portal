@@ -82,7 +82,7 @@ const updateProfile = asyncHandler(async (req, res) => {
     if (profilePicture) {
       try {
         // Upload resume to Cloudinary
-        const cloudinaryResponse = await cloudinary.uploader.upload('https://i.dailymail.co.uk/1s/2024/07/11/19/87218215-13625093-image-a-39_1720721817987.jpg');
+        const cloudinaryResponse = await cloudinary.uploader.upload(profilePicture);
         profile.profilePicture = cloudinaryResponse.secure_url;
       } catch (error) {
         console.error("Error uploading profile picture:", error);

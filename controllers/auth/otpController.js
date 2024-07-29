@@ -165,8 +165,7 @@ const createProfile = asyncHandler(async (req, res) => {
     // Save the new profile to the database
     await newProfile.save();
 
-    // Send the newly created profile as a response
-    //res.status(201).json(newProfile);
+ 
   } catch (error) {
     // If an error occurs during profile creation, handle it and send an error response
     console.error("Error creating profile:", error);

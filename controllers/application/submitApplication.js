@@ -14,6 +14,8 @@ const submitApplication = asyncHandler(async (req, res) => {
 
     const job = await Job.findById(jobId);
 
+    const postedBy = job.postedBy
+
     if (!job) {
       res.status(404).json({ message: "Job not found" });
     }
@@ -39,6 +41,7 @@ const submitApplication = asyncHandler(async (req, res) => {
     const newApplication = new JobApplication({
       jobId,
       userId,
+      postedBy,
       resume,
       coverLetter,
     });

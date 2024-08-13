@@ -6,6 +6,8 @@ import { authenticate, authorize } from "../middleswares/authMiddleware.js";
 import getAllApplications from "../controllers/application/getAllApplications.js";
 import getApplicationsById from "../controllers/application/getApplicationsById.js";
 import getUserApplications from "../controllers/application/getUserAppllications.js";
+import rejectApplication from "../controllers/application/rejectApplication.js";
+import interviewSchedule from "../controllers/application/interviewSchedule.js";
 
 const router = express.Router();
 
@@ -14,5 +16,7 @@ router.get("/applications/me", authenticate, getUserApplications);
 router.get("/applications/:appId", authenticate,getApplicationsById );
 router.get("/applications", authenticate, authorize("recruiter"), getAllApplications);
 router.delete("/applications/:appId/withdraw", authenticate, withdrawApplication)
+router.patch("/applications/:appId", authenticate, authorize("recruiter"), rejectApplication);
+router.post("/applications/:appId/interview", authenticate, authorize("recruiter"), interviewSchedule);
 
 export default router;

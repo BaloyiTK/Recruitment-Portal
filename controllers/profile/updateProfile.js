@@ -103,9 +103,11 @@ const updateProfile = asyncHandler(async (req, res) => {
         // Decode Base64 string
         const base64Data = resume.replace(/^data:[^;]+;base64,/, "");
         const buffer = Buffer.from(base64Data, "base64");
-    console.log(profile.firstName)
+
         // Generate a unique filename
-        const fileName = `${profile.firstName}_${profile.lastName}_resume.${fileExtension}`;
+        const fileName = profile.firstName && profile.lastName
+          ? `${profile.firstName}_${profile.lastName}_resume.${fileExtension}`
+          : `resume_${uuidv4()}.${fileExtension}`;
     
         const uploadsDir = path.join("uploads", "resume");
         const filePath = path.join(uploadsDir, fileName);
@@ -127,6 +129,7 @@ const updateProfile = asyncHandler(async (req, res) => {
           .json({ success: false, message: "Error processing resume" });
       }
     }
+
     if (profilePicture) {
       try {
         // Upload profile picture to Cloudinary

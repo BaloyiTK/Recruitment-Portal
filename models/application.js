@@ -10,7 +10,7 @@ const jobApplicationSchema = new Schema({
   },
   postedBy: {
     type: Schema.Types.ObjectId,
-    ref: "Job", // Assuming 'User' is the model for the person who posted the job
+    ref: "Job", 
     required: true,
   },
   userId: {
@@ -26,11 +26,11 @@ const jobApplicationSchema = new Schema({
   },
   coverLetter: {
     type: String,
-    required: false, // Assuming the cover letter is optional
+    required: false, 
   },
   status: {
     type: String,
-    enum: ["pending", "viewed", "accepted", "rejected", "interview", "offer", "hired"],
+    enum: ["pending", "viewed", "rejected", "interview", "offer", "hired"],
     default: "pending",
   },
   appliedDate: {

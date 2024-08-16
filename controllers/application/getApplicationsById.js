@@ -5,7 +5,7 @@ import sendApplicationStatusUpdateEmail from "../../services/communication/sendA
 const getApplicationById = asyncHandler(async (req, res) => {
     try {
         const { appId } = req.params;
-        const { accountType, email } = req.user;
+        const { accountType } = req.user;
 
         const application = await JobApplication.findById(appId);
 
@@ -16,7 +16,12 @@ const getApplicationById = asyncHandler(async (req, res) => {
         if (accountType === "recruiter" && application.status === "pending") {
             application.status = "viewed";
             await application.save();
-            sendApplicationStatusUpdateEmail(email, "Viewed");
+        
+
+            const applicant = await User.findById(application.userId);
+            if (applicant) {
+                sendApplicationStatusUpdateEmail(applicant.email, application.status);
+            }
         }
 
         return res.json(application);

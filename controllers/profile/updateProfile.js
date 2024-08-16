@@ -106,7 +106,7 @@ const updateProfile = asyncHandler(async (req, res) => {
 
         // Generate a unique filename
         const fileName = profile.firstName && profile.lastName
-          ? `${profile.firstName}_${profile.lastName}_resume.${fileExtension}`
+          ? `${profile.firstName}_${profile.lastName}_${uuidv4()}_resume.${fileExtension}`
           : `resume_${uuidv4()}.${fileExtension}`;
     
         const uploadsDir = path.join("uploads", "resume");

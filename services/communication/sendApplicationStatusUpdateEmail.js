@@ -22,7 +22,7 @@ const sendApplicationStatusUpdateEmail = async (recipientEmail, applicationStatu
     to: recipientEmail,
     subject: "Application Status Update",
     html: `<p>Your application status has been updated.</p>
-           <p>New Status: ${applicationStatus}, fingers crossed</p>`
+           <p>New Status: ${applicationStatus}, </p>`
   };
 
   try {

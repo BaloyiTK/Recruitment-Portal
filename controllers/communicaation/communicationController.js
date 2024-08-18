@@ -27,6 +27,9 @@ const sendCommunication = asyncHandler(async (req, res) => {
       case 'applicationStatusUpdate':
         await sendApplicationStatusUpdateEmail(recipient, data);
         break;
+        case 'interviewSchedule':
+          await sendApplicationInterviewScheduleEmail(recipient, data);
+          break;
       default:
         throw new Error('Invalid communication type.');
     }

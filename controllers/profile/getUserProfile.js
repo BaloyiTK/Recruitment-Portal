@@ -6,7 +6,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     try {
     
         const userId =  req.params.userId;
-        console.log(userId)
+   
         const profile = await Profile.findOne({ user: userId });
 
         if (!profile) {

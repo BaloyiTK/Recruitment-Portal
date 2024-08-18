@@ -8,6 +8,10 @@ import getApplicationsById from "../controllers/application/getApplicationsById.
 import getUserApplications from "../controllers/application/getUserAppllications.js";
 import rejectApplication from "../controllers/application/rejectApplication.js";
 import interviewSchedule from "../controllers/application/interviewSchedule.js";
+import zoomMeeting from "../controllers/application/zoomMeeting.js";
+
+
+
 
 const router = express.Router();
 
@@ -17,6 +21,10 @@ router.get("/applications/:appId", authenticate,getApplicationsById );
 router.get("/applications", authenticate, authorize("recruiter"), getAllApplications);
 router.delete("/applications/:appId/withdraw", authenticate, withdrawApplication)
 router.patch("/applications/:appId", authenticate, authorize("recruiter"), rejectApplication);
-router.post("/applications/:appId/interview", authenticate, authorize("recruiter"), interviewSchedule);
+router.post("/applications/:appId", authenticate, authorize("recruiter"), interviewSchedule);
+router.get("/applications/:appId/meeting", authenticate, authorize("recruiter"), interviewSchedule);
+router.post("/api/create-meeting/:appId", authenticate, authorize("recruiter"), zoomMeeting);
+
+
 
 export default router;

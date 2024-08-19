@@ -15,7 +15,7 @@ const sendApplicationInterviewScheduleEmail = async (recipientEmail, interviewDa
   const {firstName, lastName, title} = applicantionDetails
 
   const { start_url, join_url, password, start_time, duration, id, timezone } = interviewData;
-  console.log(recipientEmail)
+  
   // Format start time
   const startDate = new Date(start_time);
   const formattedStartTime = startDate.toLocaleString('en-US', { timeZone: timezone });
@@ -70,7 +70,7 @@ const sendApplicationInterviewScheduleEmail = async (recipientEmail, interviewDa
   try {
     // Send the email
     await transporter.sendMail(mailOptions);
-    console.log("Application status update email sent successfully!");
+ 
   } catch (error) {
     console.error("Error sending application status update email:", error);
     throw new Error("Failed to send application status update email.");

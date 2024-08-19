@@ -7,36 +7,47 @@ import cron from 'node-cron';
 
 const interviewSchedule = asyncHandler(async (req, res) => {
     try {
-        const { startTime, endTime, venue, instructions, reminderMinutes } = req.body;
+        const { startTime, duration, venue, instructions, reminderMinutes } = req.body;
 
-        if (!startTime || !endTime) {
-            return res.status(400).json({ error: 'startTime and endTime are required' });
+        // Validate required fields
+        if (!startTime || !duration || !venue) {
+            return res.status(400).json({ error: 'startTime, duration, and venue are required' });
         }
 
-        // Use Moment.js to parse and format the dates
+        // Use Moment.js to parse the start time
         const start = moment(startTime);
-        const end = moment(endTime);
 
-        // Calculate duration using Moment.js
-        const duration = moment.duration(end.diff(start));
-        const durationHours = Math.floor(duration.asHours());
-        const durationMinutes = Math.floor(duration.asMinutes()) % 60;
+        if (!start.isValid()) {
+            return res.status(400).json({ error: 'Invalid startTime format' });
+        }
+
+        // Validate duration
+        if (isNaN(duration) || duration <= 0) {
+            return res.status(400).json({ error: 'Invalid duration format' });
+        }
+
+        // Calculate the end time based on duration
+        const end = start.clone().add(duration, 'minutes');
+
+        console.log(start)
+        console.log(end)
 
         // Format dates and times
-        const formattedStart = start.format('MMMM D, YYYY h:mm A'); // Example: August 17, 2024 2:00 PM
-        const formattedEnd = end.format('MMMM D, YYYY h:mm A'); // Example: August 17, 2024 3:00 PM
+        const formattedStart = start.format('MMMM D, YYYY h:mm A');
+        const formattedEnd = end.format('MMMM D, YYYY h:mm A');
+
+        // Calculate duration
+        const durationHours = Math.floor(duration / 60);
+        const durationMinutes = duration % 60;
 
         // Log formatted output
         let durationMessage = 'Duration:';
-
-        if (durationHours >= 1) {
+        if (durationHours > 0) {
             durationMessage += ` ${durationHours} hour(s)`;
         }
-        
-        if (durationMinutes >= 1) {
+        if (durationMinutes > 0) {
             durationMessage += durationHours > 0 ? `, ${durationMinutes} minute(s)` : ` ${durationMinutes} minute(s)`;
         }
-        
         console.log(durationMessage);
         console.log('Venue:', venue);
 
@@ -56,27 +67,25 @@ const interviewSchedule = asyncHandler(async (req, res) => {
             const applicant = await User.findById(application.userId);
             if (applicant) {
                 await sendApplicationStatusUpdateEmail(applicant.email, application.status);
-           
-            }
 
-            console.log(reminderMinutes);
+                if (reminderMinutes && reminderMinutes > 0) {
+                    const reminderTime = start.clone().subtract(reminderMinutes, 'minutes');
 
-            // Schedule the reminder if `reminderMinutes` is provided
-            if (reminderMinutes) {
-                const reminderTime = start.clone().subtract(reminderMinutes, 'minutes');
+                    if (reminderTime.isBefore(moment())) {
+                        console.log('Reminder time is in the past. Skipping scheduling.');
+                    } else {
+                        const reminderTimeCron = `${reminderTime.minute()} ${reminderTime.hour()} ${reminderTime.date()} ${reminderTime.month() + 1} *`;
+                        console.log('Scheduling reminder for:', reminderTime.toString());
 
-                // Use cron expression to schedule the reminder
-                const reminderTimeCron = `${reminderTime.minute()} ${reminderTime.hour()} ${reminderTime.date()} ${reminderTime.month() + 1} *`;
-
-                console.log('Scheduling reminder for:', reminderTime.toString());
-
-                cron.schedule(reminderTimeCron, () => {
-                    console.log('Reminder triggered at:', new Date().toString());
-                    sendApplicationStatusUpdateEmail(applicant.email, 'Upcoming Interview Reminder');
-                }, {
-                    scheduled: true,
-                    timezone: "Africa/Johannesburg" // Ensure scheduling occurs in the correct timezone
-                });
+                        cron.schedule(reminderTimeCron, async () => {
+                            console.log('Reminder triggered at:', new Date().toString());
+                            await sendApplicationStatusUpdateEmail(applicant.email, 'Upcoming Interview Reminder');
+                        }, {
+                            scheduled: true,
+                            timezone: "Africa/Johannesburg"
+                        });
+                    }
+                }
             }
         }
 

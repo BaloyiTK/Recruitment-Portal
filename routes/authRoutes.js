@@ -22,6 +22,6 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/make-admin", authenticate, authorize("admin"), makeAdmin);
 router.post("/make-editor", authenticate, authorize("admin"), makeEditor);
-router.get("/logout", authenticate, logout);
+router.get("/logout", authenticate, logout)
 
 export default router;

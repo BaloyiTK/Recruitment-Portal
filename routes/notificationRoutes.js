@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.get("/notifications",authenticate, getNotifications);
 router.get("/notifications/:notificationId", authenticate,getNotificationById);
-router.delete("/notifications/:notificationId", authenticate, deleteNotification);
+router.delete("/notifications/:notificationId", authenticate, deleteNotification)
 
 export default router

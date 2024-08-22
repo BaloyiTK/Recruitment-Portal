@@ -11,4 +11,4 @@ router.get("/notifications",authenticate, getNotifications);
 router.get("/notifications/:notificationId", authenticate,getNotificationById);
 router.delete("/notifications/:notificationId", authenticate, deleteNotification);
 
-export default router;
+export default router

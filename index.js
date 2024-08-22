@@ -7,9 +7,13 @@ import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
+import notificationRouter from "./routes/notificationRoutes.js";
 import applicationRouter from "./routes/applicationRoutes.js";
 import errorHandler from "./middleswares/errorMiddleware.js";
 import axios from "axios";
+import logRequestResponse from "./middleswares/logRequestResponse.js";
+import logError from "./middleswares/logError.js";
+
 
 dotenv.config();
 
@@ -30,6 +34,8 @@ app.use(
 app.use(cookieParser());
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
+
+app.use(logRequestResponse);
 
 // Routes
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -81,6 +87,7 @@ app.use("/", userRouter);
 app.use("/", profileRouter);
 app.use("/", jobRouter);
 app.use("/", applicationRouter);
+app.use("/", notificationRouter);
 
 // Connect to MongoDB
 mongoose
@@ -96,4 +103,6 @@ mongoose
   });
 
 // Error Handler Middleware
+
+app.use(logError);
 app.use(errorHandler);

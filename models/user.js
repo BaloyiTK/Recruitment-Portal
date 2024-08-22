@@ -33,8 +33,10 @@ const userSchema = new mongoose.Schema(
       code: { type: String }, // OTP code
       expires: { type: Date },
     },
-    isEmailVerified: { type: Boolean, default: false }, // Field to indicate whether email is verified
+    isEmailVerified: { type: Boolean, default: false }, 
+    accountStatus: { type: String, enum: ['active', 'inactive', 'banned'], default: 'active' },
   },
+   
   { timestamps: true }
 );
 

@@ -1,0 +1,37 @@
+2024-08-22T07:28:23.707Z [info]: Received request: POST /login
+2024-08-22T07:28:32.965Z [info]: Received request: POST /login
+2024-08-22T07:28:42.491Z [info]: Received request: POST /login
+2024-08-22T07:29:55.402Z [info]: Received request: GET /logout
+2024-08-22T07:35:47.437Z [info]: Received request: POST /login
+2024-08-22T07:37:04.787Z [info]: Received request: GET /jobs
+2024-08-22T07:39:58.513Z [info]: Received request: GET /jobs
+2024-08-22T07:42:19.881Z [info]: Received request: GET /jobs
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:46:39.228Z"}
+{"level":"info","message":"Received request: POST /login","timestamp":"2024-08-22T07:46:53.454Z"}
+{"level":"info","message":"Received request: POST /login","timestamp":"2024-08-22T07:54:18.827Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:54:23.729Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:54:53.253Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:55:38.226Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:56:29.494Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:58:07.516Z"}
+{"level":"info","message":"[User: undefined] Received request: GET /jobs - Body: {} - Headers: {\"user-agent\":\"PostmanRuntime/7.41.2\",\"accept\":\"*/*\",\"cache-control\":\"no-cache\",\"postman-token\":\"d751c5be-9938-4148-9917-62b19e30bf30\",\"host\":\"localhost:3001\",\"accept-encoding\":\"gzip, deflate, br\",\"connection\":\"keep-alive\",\"cookie\":\"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmM0NWNiMjE3ZTRkMGZmZGRjODBlMzgiLCJ1c2VybmFtZSI6InRpeWFuaSIsImVtYWlsIjoidGl5YW5pa2V2aW5iYWxveWlAZ21haWwuY29tIiwiYWNjb3VudFR5cGUiOiJqb2JzZWVrZXIiLCJpYXQiOjE3MjQzMTMyNTgsImV4cCI6MTcyNDM3MzI1OH0.jjaq4Nw7CJ-GR5F-FsIM3xfEqE-NlPR8E3QjDYsgpf8\"}","timestamp":"2024-08-22T07:58:07.524Z"}
+{"level":"info","message":"[User: undefined] Response status: 200 - Duration: 61ms","timestamp":"2024-08-22T07:58:07.587Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:59:10.857Z"}
+{"level":"info","message":"[User: Guest] Received request: GET /jobs - Body: {} - Headers: {\"user-agent\":\"PostmanRuntime/7.41.2\",\"accept\":\"*/*\",\"cache-control\":\"no-cache\",\"postman-token\":\"e6aaa1bb-0040-42ee-9838-9122cf69be2d\",\"host\":\"localhost:3001\",\"accept-encoding\":\"gzip, deflate, br\",\"connection\":\"keep-alive\",\"cookie\":\"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmM0NWNiMjE3ZTRkMGZmZGRjODBlMzgiLCJ1c2VybmFtZSI6InRpeWFuaSIsImVtYWlsIjoidGl5YW5pa2V2aW5iYWxveWlAZ21haWwuY29tIiwiYWNjb3VudFR5cGUiOiJqb2JzZWVrZXIiLCJpYXQiOjE3MjQzMTMyNTgsImV4cCI6MTcyNDM3MzI1OH0.jjaq4Nw7CJ-GR5F-FsIM3xfEqE-NlPR8E3QjDYsgpf8\"}","timestamp":"2024-08-22T07:59:10.863Z"}
+{"level":"info","message":"[User: Guest] Response status: 200 - Duration: 51ms","timestamp":"2024-08-22T07:59:10.915Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T07:59:31.254Z"}
+{"level":"info","message":"[User: Guest] Received request: GET /jobs - Body: {} - Headers: {\"user-agent\":\"PostmanRuntime/7.41.2\",\"accept\":\"*/*\",\"cache-control\":\"no-cache\",\"postman-token\":\"b0c973ac-1f45-4387-9344-36e4e6ecfb39\",\"host\":\"localhost:3001\",\"accept-encoding\":\"gzip, deflate, br\",\"connection\":\"keep-alive\",\"cookie\":\"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmM0NWNiMjE3ZTRkMGZmZGRjODBlMzgiLCJ1c2VybmFtZSI6InRpeWFuaSIsImVtYWlsIjoidGl5YW5pa2V2aW5iYWxveWlAZ21haWwuY29tIiwiYWNjb3VudFR5cGUiOiJqb2JzZWVrZXIiLCJpYXQiOjE3MjQzMTMyNTgsImV4cCI6MTcyNDM3MzI1OH0.jjaq4Nw7CJ-GR5F-FsIM3xfEqE-NlPR8E3QjDYsgpf8\"}","timestamp":"2024-08-22T07:59:31.260Z"}
+{"level":"info","message":"[User: Guest] Response status: 200 - Duration: 59ms","timestamp":"2024-08-22T07:59:31.321Z"}
+{"level":"info","message":"Received request: GET /jobs","timestamp":"2024-08-22T08:00:11.814Z"}
+{"level":"info","message":"[User: Guest] Received request: GET /jobs - Body: {} - Headers: {\"user-agent\":\"PostmanRuntime/7.41.2\",\"accept\":\"*/*\",\"cache-control\":\"no-cache\",\"postman-token\":\"c5b31eb4-c4d3-4589-961c-f9bde2785f01\",\"host\":\"localhost:3001\",\"accept-encoding\":\"gzip, deflate, br\",\"connection\":\"keep-alive\",\"cookie\":\"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmM0NWNiMjE3ZTRkMGZmZGRjODBlMzgiLCJ1c2VybmFtZSI6InRpeWFuaSIsImVtYWlsIjoidGl5YW5pa2V2aW5iYWxveWlAZ21haWwuY29tIiwiYWNjb3VudFR5cGUiOiJqb2JzZWVrZXIiLCJpYXQiOjE3MjQzMTMyNTgsImV4cCI6MTcyNDM3MzI1OH0.jjaq4Nw7CJ-GR5F-FsIM3xfEqE-NlPR8E3QjDYsgpf8\"}","timestamp":"2024-08-22T08:00:11.819Z"}
+{"level":"info","message":"[User: Guest] Response status: 200 - Duration: 65ms","timestamp":"2024-08-22T08:00:11.885Z"}
+{"level":"info","message":"Received request: POST /login","timestamp":"2024-08-22T08:13:12.018Z"}
+{"level":"info","message":"Received request: POST /login","timestamp":"2024-08-22T08:14:30.809Z"}
+{"level":"info","message":"[User: Guest] Received request: POST /login - Body: {\"email\":\"tiyani@ikusasatech.com\",\"password\":\"@#Admin123\"} - Headers: {\"content-type\":\"application/json\",\"user-agent\":\"PostmanRuntime/7.41.2\",\"accept\":\"*/*\",\"cache-control\":\"no-cache\",\"postman-token\":\"3052cc6b-3062-4c22-bcea-e3df8296d1f5\",\"host\":\"localhost:3001\",\"accept-encoding\":\"gzip, deflate, br\",\"connection\":\"keep-alive\",\"content-length\":\"78\",\"cookie\":\"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmM0NWNiMjE3ZTRkMGZmZGRjODBlMzgiLCJ1c2VybmFtZSI6InRpeWFuaSIsImVtYWlsIjoidGl5YW5pa2V2aW5iYWxveWlAZ21haWwuY29tIiwiYWNjb3VudFR5cGUiOiJqb2JzZWVrZXIiLCJpYXQiOjE3MjQzMTQzOTIsImV4cCI6MTcyNDM3NDM5Mn0.ZO9eo-BeYUtWjAJlCBCl9f7MrJ__pS4WOmCkpxwfzR8\"}","timestamp":"2024-08-22T08:14:30.815Z"}
+{"level":"info","message":"[User: Guest] Response status: 200 - Duration: 141ms","timestamp":"2024-08-22T08:14:30.958Z"}
+{"level":"info","message":"Received request: GET /logout","timestamp":"2024-08-22T08:15:36.589Z"}
+{"level":"info","message":"Received request: POST /login","timestamp":"2024-08-22T08:16:17.159Z"}
+{"level":"info","message":"[User: Guest] Received request: POST /login - Body: {\"email\":\"tiyani@ikusasatech.com\",\"password\":\"@#Admin123\"} - Headers: {\"content-type\":\"application/json\",\"user-agent\":\"PostmanRuntime/7.41.2\",\"accept\":\"*/*\",\"cache-control\":\"no-cache\",\"postman-token\":\"69055716-8156-4156-ad97-4eb15f8bad02\",\"host\":\"localhost:3001\",\"accept-encoding\":\"gzip, deflate, br\",\"connection\":\"keep-alive\",\"content-length\":\"78\"}","timestamp":"2024-08-22T08:16:17.160Z"}
+{"level":"info","message":"[User: Guest] Response status: 200 - Duration: 109ms","timestamp":"2024-08-22T08:16:17.270Z"}
+{"level":"info","message":"Received request: GET /jobs/org/recruiter","timestamp":"2024-08-22T08:16:33.530Z"}
+{"level":"info","message":"Received request: GET /jobs/org/recruiter","timestamp":"2024-08-22T08:17:18.240Z"}

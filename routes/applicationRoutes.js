@@ -10,9 +10,6 @@ import rejectApplication from "../controllers/application/rejectApplication.js";
 import interviewSchedule from "../controllers/application/interviewSchedule.js";
 import zoomMeeting from "../controllers/application/zoomMeeting.js";
 
-
-
-
 const router = express.Router();
 
 router.post("/applications/:jobId/submit", authenticate, submitApplication);
@@ -22,9 +19,8 @@ router.get("/applications", authenticate, authorize("recruiter"), getAllApplicat
 router.delete("/applications/:appId/withdraw", authenticate, withdrawApplication)
 router.patch("/applications/:appId", authenticate, authorize("recruiter"), rejectApplication);
 router.post("/applications/:appId", authenticate, authorize("recruiter"), interviewSchedule);
-router.get("/applications/:appId/meeting", authenticate, authorize("recruiter"), interviewSchedule);
+//router.get("/applications/:appId/meeting", authenticate, authorize("recruiter"), interviewSchedule);
 router.post("/api/create-meeting/:appId", authenticate, authorize("recruiter"), zoomMeeting);
-
 
 
 export default router;

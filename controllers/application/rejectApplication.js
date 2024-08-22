@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import JobApplication from "../../models/application.js";
 import sendApplicationStatusUpdateEmail from "../../services/communication/sendApplicationStatusUpdateEmail.js";
 import User from "../../models/user.js";
+import Notification from "../../models/notification.js";
 
 const rejectApplication = asyncHandler(async (req, res) => {
     try {
@@ -21,6 +22,13 @@ const rejectApplication = asyncHandler(async (req, res) => {
             const applicant = await User.findById(application.userId);
             if (applicant) {
                 sendApplicationStatusUpdateEmail(applicant.email, application.status);
+                const notification = new Notification({
+                    userId: applicant._id, // Use applicant._id for the notification
+                    title: "Job Application Unsuccessful",
+                    message: `Job Application Unsuccessful.`,
+                  });
+          
+                  await notification.save();
             }
         }
 

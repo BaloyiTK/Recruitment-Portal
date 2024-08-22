@@ -8,6 +8,7 @@ import { authenticate, authorize } from "../middleswares/authMiddleware.js";
 import getJobs from "../controllers/job/getJobs.js";
 import getRecruiterjobs from "../controllers/job/getRecruiterJobs.js";
 
+
 const router = express.Router();
 
 router.post("/jobs", authenticate, authorize("recruiter"), createJob);

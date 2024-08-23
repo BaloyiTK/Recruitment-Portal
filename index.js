@@ -7,6 +7,7 @@ import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
+import logRouter from "./routes/logRoutes.js";
 import notificationRouter from "./routes/notificationRoutes.js";
 import applicationRouter from "./routes/applicationRoutes.js";
 import errorHandler from "./middleswares/errorMiddleware.js";
@@ -88,6 +89,7 @@ app.use("/", profileRouter);
 app.use("/", jobRouter);
 app.use("/", applicationRouter);
 app.use("/", notificationRouter);
+app.use("/", logRouter);
 
 // Connect to MongoDB
 mongoose

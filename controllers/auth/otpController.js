@@ -1,4 +1,3 @@
-// otpController.js
 import asyncHandler from "express-async-handler";
 import User from "../../models/user.js";
 import { generateAuthToken } from "../../utils/generateAuthToken.js";
@@ -9,7 +8,7 @@ import { passwordHash } from "../../utils/passwordHash.js";
 import redis from "redis";
 import Profile from "../../models/profile.js";
 
-
+// Initialize Redis client
 const client = redis.createClient({
   password: process.env.REDIS_PASSWORD,
   socket: {
@@ -18,7 +17,15 @@ const client = redis.createClient({
   },
 });
 
-client.connect(console.log("Connected to Redis"));
+client.on('error', (err) => {
+  console.error('Redis error:', err);
+});
+
+client.connect().then(() => {
+  console.log("Connected to Redis");
+}).catch(err => {
+  console.error('Redis connection error:', err);
+});
 
 const verifyOTP = asyncHandler(async (req, res) => {
   try {
@@ -34,23 +41,13 @@ const verifyOTP = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "Invalid OTP" });
     }
 
-    const userId = user.id.toString();
-
-    await client.set("id", userId);
-
-    const value = await client.get("id");
- 
-
-    const otpExpiration = user.otp.expires;
     const currentTime = new Date();
 
-
-
-    //  if (currentTime > otpExpiration) {
-    //   user.otp = null;
-    //    await user.save();
-    //    return res.status(400).json({ message: "OTP has expired" });
-    //  }
+    if (currentTime > user.otp.expires) {
+      user.otp = null;
+      await user.save();
+      return res.status(400).json({ message: "OTP has expired" });
+    }
 
     user.isEmailVerified = true;
     user.otp = null;
@@ -59,10 +56,11 @@ const verifyOTP = asyncHandler(async (req, res) => {
     const token = generateAuthToken(user);
     setAuthCookie(res, token);
 
+    await sendRegistrationVerificationEmail(user.email, null, "verified");
+
     res.status(200).json({ message: "Email verified successfully" });
-    sendRegistrationVerificationEmail(user.email, null, "verified")
   } catch (error) {
-    console.error(error);
+    console.error("Error in verifyOTP:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
@@ -72,81 +70,83 @@ const resendOTP = asyncHandler(async (req, res) => {
     const id = await client.get("id");
 
     if (!id) {
-      res
-        .status(500)
-        .json({ success: false, message: "Internal server error" });
+      return res.status(500).json({ success: false, message: "Internal server error" });
     }
 
     const user = await User.findById(id).select("-password");
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     if (user.isEmailVerified) {
       user.otp = null;
-      return res.status(404).json({ message: "User already verified, please login" });
+      return res.status(400).json({ message: "User already verified, please login" });
     }
 
-    if (!user) {
-      return res.status(404).json({ message: "user not found" });
-    }
-
-    const recipientEmail = user.email;
     const otp = generateOTP();
+    const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
 
-    const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); 
-
-    user.otp.code = otp;
-
-    user.otp.expires = otpExpiration;
+    user.otp = {
+      code: otp,
+      expires: otpExpiration,
+    };
 
     await user.save();
-
-    await sendRegistrationVerificationEmail(recipientEmail, otp);
-
+    await sendRegistrationVerificationEmail(user.email, otp);
 
     res.status(200).json({ message: "OTP resent successfully" });
-  
   } catch (error) {
-    console.error(error);
+    console.error("Error in resendOTP:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
-const registerUser = async (username, email, accountType,  password) => {
+const registerUser = asyncHandler(async (username, email, accountType, password) => {
+  try {
+    const hashedPassword = await passwordHash(password);
+    const otp = generateOTP();
+    const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
 
- 
-  const hashedPassword = await passwordHash(password);
+    const user = await User.create({
+      username,
+      email,
+      accountType,
+      password: hashedPassword,
+      otp: {
+        code: otp,
+        expires: otpExpiration,
+      },
+    });
 
-  const otp = generateOTP(); // Generate OTP
-  const otpExpiration = new Date(Date.now() + 30 * 60 * 1000); 
+    const userId = user.id.toString();
 
-  const user = await User.create({
-    username,
-    email,
-    accountType,
-    password: hashedPassword,
-    otp: {
-      code: otp,
-      expires: otpExpiration,
-    },
-  });
+    if (client.isReady) {
+      await client.setEx("id", 3600, userId); // Set expiration to 1 hour
+    }
 
-  const userId = user.id.toString();
+    await sendRegistrationVerificationEmail(email, otp);
 
-  if (client.isReady) {
-    client.setEx("id", 1000, userId);
+    return user;
+  } catch (error) {
+    console.error("Error in registerUser:", error);
+    throw new Error("Registration failed");
   }
-
-  createProfile()
-
-
-  await sendRegistrationVerificationEmail(email, otp, null); // Send OTP via email
-};
-
+});
 
 const createProfile = asyncHandler(async (req, res) => {
   try {
     const userId = await client.get("id");
 
+    if (!userId) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+
     const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     // Check if profile already exists for the user
     const profile = await Profile.findOne({ user: userId });
@@ -154,25 +154,19 @@ const createProfile = asyncHandler(async (req, res) => {
       return res.status(409).json({ message: "Profile already exists" });
     }
 
-    // Destructure profile details from the request body
-    const { email } = user;
-
+    // Create and save the new profile
     const newProfile = new Profile({
       user: userId,
-      email,
+      email: user.email,
     });
 
-    // Save the new profile to the database
     await newProfile.save();
 
- 
+    res.status(201).json({ message: "Profile created successfully" });
   } catch (error) {
-    // If an error occurs during profile creation, handle it and send an error response
     console.error("Error creating profile:", error);
-   // res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-
-
-export { verifyOTP, resendOTP, registerUser, createProfile }
+export { verifyOTP, resendOTP, registerUser, createProfile };

@@ -5,20 +5,23 @@ import User from "../../models/user.js";
 const getOneUser = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
+
+
+  console.log("one user get")
+  console.log(userId)
   try {
     // Ensure consistent import and use of asyncHandler
     const role = req.user.role;
 
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId).select("-password -otp");
 
-    console.log(req.user);
+    //console.log(req.user);
+    console.log(user);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    if (role !== "admin" && userId !== req.user.userId) {
-      return res.status(403).json({ message: "Not authorized" });
-    }
+
 
     res.status(200).json(user);
   } catch (error) {

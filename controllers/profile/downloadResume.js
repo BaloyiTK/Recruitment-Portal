@@ -14,8 +14,7 @@ const downloadResume = asyncHandler(async (req, res) => {
             return res.status(404).json({ message: 'Resume not found' });
         }
 
-        // Get the file path from the profile
-        const filePath = profile.resume;
+        // Get the file path from the profileF
 
         // Check if file exists
         if (!fs.existsSync(filePath)) {

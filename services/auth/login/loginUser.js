@@ -12,15 +12,20 @@ const loginUser = async (res, email, password) => {
 
     // If user not found, throw an error
     if (!user) {
-      throw new Error("Invalid email or password");
+      return { success: false, message: "Invalid email or password" };
+    }
+
+    
+
+    // Check if the account is active
+    if (user.accountStatus !== "active") {
+      return { success: false, message: "Account not active, please contact support" };
     }
 
     // Compare passwords
     const passwordMatch = await bcrypt.compare(password, user.password);
-
-    // If passwords don't match, throw an error
     if (!passwordMatch) {
-      throw new Error("Invalid email or password");
+      return { success: false, message: "Invalid email or password" };
     }
 
     // Check if the email is verified
@@ -29,9 +34,7 @@ const loginUser = async (res, email, password) => {
       sendRegistrationVerificationEmail(email, otp);
       user.otp.code = otp;
       await user.save();
-      throw new Error(
-"Email not verified. Please check your inbox for a verification email. If not received, check spam or request a new one."
-      );
+      return { success: false, message: "Email not verified. Please check your inbox for a verification email. If not received, check spam or request a new one." };
     }
 
     // Generate a JWT token for the authenticated user
@@ -43,7 +46,8 @@ const loginUser = async (res, email, password) => {
 
     return { success: true, user: userWithoutPassword };
   } catch (error) {
-    return { success: false, message: error.message };
+    console.error("Error during login:", error.message); // Log the error for debugging
+    return { success: false, message: "An unexpected error occurred. Please try again later." };
   }
 };
 

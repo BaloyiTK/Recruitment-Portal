@@ -9,9 +9,9 @@ import updateUser from "../controllers/user/updateUser.js";
 const router = express.Router();
 
 router.get("/user/me", authenticate, getLoggedInUser);
-router.get("/user/:id", authenticate, getOneUser);
-router.get("/users", authenticate, authorize("recruiter, admin"), getAllUsers);
-router.delete("/user/:id", authenticate, deleteUser);;
+router.get("/user/:id", authenticate, authorize("admin"), getOneUser);
+router.get("/users", authenticate, authorize("admin"), getAllUsers);
+router.delete("/user/:id", authenticate, authorize("admin"), deleteUser);;
 router.patch("/user/:id", authenticate, updateUser);
 
 export default router;
